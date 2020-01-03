@@ -262,9 +262,39 @@ definition {
 		var key_currentAssignee = "${currentAssignee}";
 		var key_currentDateDay = DateUtil.getCurrentDate();
 		var key_currentDateMonth = DateUtil.getCurrentMonthName();
-		var key_currentDateMonthShort = StringUtil.substring("${currentDateMonth}", "0", "3");
+		var key_currentDateMonthShort = StringUtil.substring("${key_currentDateMonth}", "0", "3");
 		var key_currentDateYear = DateUtil.getCurrentYear();
-		var key_currentDate = "${currentDateMonthShort} ${currentDateDay}, ${currentDateYear}";
+
+		if ("${key_currentDateDay}" == "1") {
+			var key_currentDate = "${key_currentDateMonthShort} 0${key_currentDateDay}, ${key_currentDateYear}";
+		}
+		else if ("${key_currentDateDay}" == "2") {
+			var key_currentDate = "${key_currentDateMonthShort} 0${key_currentDateDay}, ${key_currentDateYear}";
+		}
+		else if ("${key_currentDateDay}" == "3") {
+			var key_currentDate = "${key_currentDateMonthShort} 0${key_currentDateDay}, ${key_currentDateYear}";
+		}
+		else if ("${key_currentDateDay}" == "4") {
+			var key_currentDate = "${key_currentDateMonthShort} 0${key_currentDateDay}, ${key_currentDateYear}";
+		}
+		else if ("${key_currentDateDay}" == "5") {
+			var key_currentDate = "${key_currentDateMonthShort} 0${key_currentDateDay}, ${key_currentDateYear}";
+		}
+		else if ("${key_currentDateDay}" == "6") {
+			var key_currentDate = "${key_currentDateMonthShort} 0${key_currentDateDay}, ${key_currentDateYear}";
+		}
+		else if ("${key_currentDateDay}" == "7") {
+			var key_currentDate = "${key_currentDateMonthShort} 0${key_currentDateDay}, ${key_currentDateYear}";
+		}
+		else if ("${key_currentDateDay}" == "8") {
+			var key_currentDate = "${key_currentDateMonthShort} 0${key_currentDateDay}, ${key_currentDateYear}";
+		}
+		else if ("${key_currentDateDay}" == "9") {
+			var key_currentDate = "${key_currentDateMonthShort} 0${key_currentDateDay}, ${key_currentDateYear}";
+		}
+		else {
+			var key_currentDate = "${key_currentDateMonthShort} ${key_currentDateDay}, ${key_currentDateYear}";
+		}
 
 		Click(locator1 = "WorkflowAllItems#WORKFLOW_INSTANCE_ID");
 
@@ -314,7 +344,7 @@ definition {
 
 			AssertTextEquals.assertPartialText(
 				locator1 = "WorkflowAllItems#DETAIL_PAGE_END_DATE",
-				value1 = "${currentDate}");
+				value1 = "${key_currentDate}");
 
 			AssertTextNotPresent(value1 = "Current Step");
 
