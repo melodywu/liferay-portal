@@ -44,6 +44,16 @@
 	<td></td>
 </tr>
 <tr>
+	<td>SLA_DEFINITION_DAYS_REQUIRED_MESSAGE</td>
+	<td>//span[contains(., 'A duration time is required.')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SLA_DEFINITION_DAYS_ENTER_MESSAGE</td>
+	<td>//div[contains(., 'Enter a whole number.')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>SLA_DEFINITION_DESCRIPTION</td>
 	<td>//input[@id='sla_description']</td>
 	<td></td>
@@ -54,8 +64,28 @@
 	<td></td>
 </tr>
 <tr>
+	<td>SLA_DEFINITION_HOURS_REQUIRED_MESSAGE</td>
+	<td>//span[contains(., 'A duration time is required.')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SLA_DEFINITION_HOURS_ENTER_MESSAGE</td>
+	<td>//span[contains(., 'Value must be an hour below 23:59.')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>SLA_DEFINITION_NAME</td>
 	<td>//input[@id='sla_name']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SLA_DEFINITION_NAME_EXIST_MESSAGE</td>
+	<td>//div[contains(., 'Name')]//span[contains(., 'An SLA with the same name already exists.')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SLA_DEFINITION_NAME_REQUIRED_MESSAGE</td>
+	<td>//div[contains(., 'Name')]//span[contains(., 'A name is required.')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -69,8 +99,18 @@
 	<td></td>
 </tr>
 <tr>
+	<td>SLA_DEFINITION_START_REQUIRED_MESSAGE</td>
+	<td>//div[contains(@class, 'form-group') and contains(., 'Start ')]//span[contains(., 'At least one parameter is required.')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>SLA_DEFINITION_STOP</td>
 	<td>//label[@for="sla_time_stop"]/following-sibling::div[contains(@class, 'align-items-start')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SLA_DEFINITION_STOP_REQUIRED_MESSAGE</td>
+	<td>//span[contains(., 'At least one parameter is required.')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -86,6 +126,11 @@
 <tr>
 	<td>SLA_ELLIPSIS_BUTTON</td>
 	<td>//*[contains(@class, 'ellipsis')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SLA_RECORD_TITLE</td>
+	<td>//div[@class='table-list-title']//a[contains(text(),'${key_slaTitle}')]</td>
 	<td></td>
 </tr>
 <tr>
