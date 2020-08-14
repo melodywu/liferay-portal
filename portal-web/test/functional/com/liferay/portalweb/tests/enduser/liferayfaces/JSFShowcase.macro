@@ -255,7 +255,7 @@ definition {
 				}
 			}
 
-		Click(locator1 = "JSFShowcase#GENERAL_BUTTON");
+			Click(locator1 = "JSFShowcase#GENERAL_BUTTON");
 
 			if (isSet(textValue)) {
 				for (var textValue : list "${textValue}") {
@@ -279,7 +279,7 @@ definition {
 				}
 			}
 
-		Click(locator1 = "JSFShowcase#GENERAL_BUTTON_2");
+			Click(locator1 = "JSFShowcase#GENERAL_BUTTON_2");
 
 			if (isSet(textValue)) {
 				for (var textValue : list "${textValue}") {
