@@ -306,10 +306,10 @@ definition {
 				locator1 = "BridgeDemos#CUSTOMER_LAST_NAME",
 				value1 = "${lastNameEdit}");
 
-		Type(
-			key_item = "Last Name",
-			locator1 = "BridgeDemos#BOOKINGS_INPUT_FIELD",
-			value1 = "${lastName}");
+			Type(
+				key_item = "Last Name",
+				locator1 = "BridgeDemos#BOOKINGS_INPUT_FIELD",
+				value1 = "${lastName}");
 		}
 
 		if (isSet(firstNameEdit)) {
@@ -318,10 +318,10 @@ definition {
 				locator1 = "BridgeDemos#CUSTOMER_FIRST_NAME",
 				value1 = "${firstNameEdit}");
 
-		Type(
-			key_item = "First Name",
-			locator1 = "BridgeDemos#BOOKINGS_INPUT_FIELD",
-			value1 = "${firstName}");
+			Type(
+				key_item = "First Name",
+				locator1 = "BridgeDemos#BOOKINGS_INPUT_FIELD",
+				value1 = "${firstName}");
 		}
 
 		Click(locator1 = "BridgeDemos#SUBMIT_BUTTON");
