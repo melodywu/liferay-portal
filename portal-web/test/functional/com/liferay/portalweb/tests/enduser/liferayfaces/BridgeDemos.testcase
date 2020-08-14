@@ -272,14 +272,14 @@ definition {
 		BridgeDemos.viewNames(
 			customerId = "2",
 			firstName = "Liz",
-			lastName = "Kessler",
-			firstNameEdit = "Lizy");
+			firstNameEdit = "Lizy",
+			lastName = "Kessler");
 
 		BridgeDemos.viewNames(
 			customerId = "3",
 			firstName = "Rich",
-			lastName = "Shearer",
-			firstNameEdit = "Richy");
+			firstNameEdit = "Richy",
+			lastName = "Shearer");
 
 		BridgeDemos.viewStartDate(
 			customerId = "1",
@@ -307,14 +307,14 @@ definition {
 		BridgeDemos.viewNames(
 			customerId = "2",
 			firstName = "Liz",
-			lastName = "Kessler",
-			firstNameEdit = "Lizy");
+			firstNameEdit = "Lizy",
+			lastName = "Kessler");
 
 		BridgeDemos.viewNames(
 			customerId = "3",
 			firstName = "Rich",
-			lastName = "Shearer",
-			firstNameEdit = "Richy");
+			firstNameEdit = "Richy",
+			lastName = "Shearer");
 
 		BridgeDemos.viewStartDate(
 			customerId = "1",
