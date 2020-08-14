@@ -478,7 +478,6 @@ definition {
 		Navigator.openWithAppendToBaseURL(urlAppend = "group/bridge-demos/jsf-pdf");
 
 		BridgeDemos.exportFile(lastName = "Green,Kessler,Shearer");
-
 	}
 
 	@priority = "5"
