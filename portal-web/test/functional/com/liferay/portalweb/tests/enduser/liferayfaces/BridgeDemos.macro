@@ -330,7 +330,7 @@ definition {
 	macro viewStartDate {
 		Click(
 			key_customerId = "${customerId}",
-			locator1 = "BridgeDemos#CUSTOMER_EDIT_BUTTON");		
+			locator1 = "BridgeDemos#CUSTOMER_EDIT_BUTTON");
 
 		AssertTextEquals(
 			key_item = "Start Date",
