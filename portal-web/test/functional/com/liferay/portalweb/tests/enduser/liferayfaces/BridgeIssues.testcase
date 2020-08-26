@@ -23,7 +23,7 @@ definition {
 	}
 
 	@priority = "5"
-	test FacePortletSmoke {
+	test FacesPortletSmoke {
 
 		// FACES_1513_2185
 
@@ -31,10 +31,33 @@ definition {
 
 		BridgeDemos.exportFile(lastName = "Export via p:dataExporter");
 
-		BridgeDemos.exportFile(lastName = "Export via p:dataExporter");
+		// Only export files, no verification of file content
 
 		BridgeDemos.exportFile(lastName = "Export via pe:exporter");
 
 		BridgeDemos.exportFile(lastName = "Download via p:fileDownload");
+
+		// FACES_2921
+
+		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/faces-2921");
+
+		AssertElementPresent(locator1 = "BridgeIssues#RENDER_KITID");
+
+		AssertElementPresent(
+			key_attribute = "HTML_BASIC",
+			locator1 = "BridgeIssues#HTML_BASIC");
+
+		// FACES_3031
+
+		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/faces-3031");
+
+		Click(locator1 = "BridgeIssues#ACTION_BUTTON");
+
+		BridgeIssues.verifyValue(
+			detailValue = "State successfully saved and restored.",
+			restorestate = "SUCCESS",
+			statusValue = "true",
+			textValue = "FACES-3031");
 	}
+
 }
