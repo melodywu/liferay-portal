@@ -1,7 +1,20 @@
 definition {
 
-	macro addComment {
+	macro verifyValue {
 
-		Click(locator1 = "BridgeDemos#SUBMIT_BUTTON");
+		if ("${restorestate}" == "true") {
+			AssertElementPresent(
+				key_attribute = "${textValue}",
+				locator1 = "BridgeIssues#TEXT_VALUE");
+
+			AssertElementPresent(
+				key_attribute = "${statusValue}",
+				locator1 = "BridgeIssues#STATUS_VALUE");
+
+			AssertElementPresent(
+				key_attribute = "${detailValue}",
+				locator1 = "BridgeIssues#DETAIL_VALUE");
+		}
 	}
+
 }
