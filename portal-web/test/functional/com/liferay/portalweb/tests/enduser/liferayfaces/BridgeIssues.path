@@ -9,8 +9,33 @@
 </thead>
 <tbody>
 <tr>
-	<td>UPLOAD_BUTTON</td>
+	<td>ACTION_BUTTON</td>
+	<td>//*[contains(@class,'testAction')]</td>
 	<td></td>
+</tr>
+<tr>
+	<td>DETAIL_VALUE</td>
+	<td>//div[@class='liferay-faces-bridge-body']//p[contains(.,'Detail: ')]/span[contains(text(),'${key_attribute}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>HTML_BASIC</td>
+	<td>//div[@class='liferay-faces-bridge-body']/code[contains(text(),'${key_attribute}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>RENDER_KITID</td>
+	<td>//code[@id='renderKitId']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>STATUS_VALUE</td>
+	<td>//div[@class='liferay-faces-bridge-body']//p[contains(.,'Status: ')]/span[contains(text(),'${key_attribute}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TEXT_VALUE</td>
+	<td>//div[@class='liferay-faces-bridge-body']//p[contains(.,'Test:')]/span[contains(text(),'${key_attribute}')]</td>
 	<td></td>
 </tr>
 </tbody>
