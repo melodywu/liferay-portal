@@ -1,0 +1,40 @@
+@component-name = "core-infrastructure"
+definition {
+
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Liferay Faces";
+
+	setUp {
+		TestCase.setUpPortalInstance();
+
+		User.firstLoginPG();
+	}
+
+	tearDown {
+		var testPortalInstance = PropsUtil.get("test.portal.instance");
+
+		if ("${testPortalInstance}" == "true") {
+			PortalInstances.tearDownCP();
+		}
+		else {
+			User.logoutPG();
+		}
+	}
+
+	@priority = "5"
+	test FacePortletSmoke {
+
+		// FACES_1513_2185
+
+		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/faces-1513-2185");
+
+		BridgeDemos.exportFile(lastName = "Export via p:dataExporter");
+
+		BridgeDemos.exportFile(lastName = "Export via p:dataExporter");
+
+		BridgeDemos.exportFile(lastName = "Export via pe:exporter");
+
+		BridgeDemos.exportFile(lastName = "Download via p:fileDownload");
+	}
+}
