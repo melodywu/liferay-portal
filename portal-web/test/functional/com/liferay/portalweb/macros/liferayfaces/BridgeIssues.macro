@@ -1,0 +1,7 @@
+definition {
+
+	macro addComment {
+		Click(locator1 = "BridgeDemos#SHOW_HIDE_COMMENTS_LINK");
+
+	}
+}
