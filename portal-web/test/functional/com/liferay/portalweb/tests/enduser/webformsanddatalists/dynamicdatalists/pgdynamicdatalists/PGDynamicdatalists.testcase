@@ -1093,10 +1093,10 @@ definition {
 			field = "Date",
 			fieldFieldLabel = "Date",
 			fieldName = "Date",
-			fieldPredefinedValue = "09/01/2019",
+			fieldPredefinedValue = "09/01/2020",
 			fieldPredefinedValueDay = "1",
 			fieldPredefinedValueMonth = "September",
-			fieldPredefinedValueYear = "2019");
+			fieldPredefinedValueYear = "2020");
 
 		DDLDataDefinition.save();
 
@@ -1118,14 +1118,14 @@ definition {
 			field = "Date",
 			fieldFieldLabel = "Date",
 			fieldName = "Date",
-			fieldPredefinedValue = "09/01/2019");
+			fieldPredefinedValue = "09/01/2020");
 
 		PortletEntry.publish();
 
 		DDLRecord.viewViaDDLDisplayPG(
 			ddlListName = "List Name",
-			ddlRecordFieldData = "9/1/2019",
-			ddlRecordFieldData_1 = "9/1/19",
+			ddlRecordFieldData = "9/1/2020",
+			ddlRecordFieldData_1 = "9/1/20",
 			field = "Date",
 			fieldFieldLabel = "Date");
 
@@ -1139,10 +1139,10 @@ definition {
 			field = "Date",
 			fieldFieldLabel = "Date",
 			fieldName = "Date",
-			fieldPredefinedValue = "09/01/2019");
+			fieldPredefinedValue = "09/01/2020");
 
 		DDLRecord.populateFieldDate(
-			ddlRecordFieldData = "05/13/2019",
+			ddlRecordFieldData = "05/13/2020",
 			fieldFieldLabel = "Date",
 			fieldName = "Date");
 
@@ -1150,8 +1150,8 @@ definition {
 
 		DDLRecord.viewViaDDLDisplayPG(
 			ddlListName = "List Name",
-			ddlRecordFieldData = "5/13/2019",
-			ddlRecordFieldData_1 = "5/13/19",
+			ddlRecordFieldData = "5/13/2020",
+			ddlRecordFieldData_1 = "5/13/20",
 			field = "Date",
 			fieldFieldLabel = "Date");
 	}
