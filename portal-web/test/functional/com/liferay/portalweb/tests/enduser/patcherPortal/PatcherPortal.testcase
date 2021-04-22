@@ -1,0 +1,67 @@
+@component-name = "portal-smoke"
+definition {
+
+	property testray.main.component.name = "Smoke";
+
+	setUp {
+		AssertClick(
+			locator1 = "UserBar#USER_SIGN_IN",
+			value1 = "Sign In");
+
+		Type.typePause(
+			locator1 = "TextInput#EMAIL_ADDRESS",
+			value1 = "test@liferay.com");
+
+		Type.typePause(
+			locator1 = "TextInput#PASSWORD",
+			value1 = "liferay");
+
+		Click(locator1 = "Button#SIGN_IN");
+	}
+
+	tearDown {
+		UserBar.signOut();
+	}
+
+	test CreateBuildForNewAccount {
+		Click(locator1 = "//a[contains(@href,'patching')][normalize-space(text())='Patcher >']");
+
+		Click(locator1 = "//a[contains(@href,'accounts')][normalize-space(text())='Accounts']");
+
+		Button.click(button = "Create Build for New Account");
+
+		Pause(locator1 = "3000");
+
+		Select(
+			key_fieldLabel = "Product",
+			locator1 = "Select#GENERIC_SELECT_FIELD",
+			value1 = "DXP 7.3");
+
+		Pause(locator1 = "3000");
+
+		Select(
+			key_fieldLabel = "Project Version",
+			locator1 = "Select#GENERIC_SELECT_FIELD",
+			value1 = "fix-pack-dxp-1-7310");
+
+		Pause(locator1 = "3000");
+
+		Select(
+			key_fieldLabel = "Project Version",
+			locator1 = "Select#GENERIC_SELECT_FIELD",
+			value1 = "fix-pack-base-7310");
+
+		Pause(locator1 = "3000");
+
+		AssertSelectedLabel(
+			key_fieldLabel = "Project Version",
+			locator1 = "Select#GENERIC_SELECT_FIELD",
+			value1 = "fix-pack-base-7310");
+
+		AssertTextEquals(
+			key_text = "troubleshootingTicketList",
+			locator1 = "TextArea#ANY",
+			value1 = "LPS-121824,RELEASE-3097,RELEASE-3128");
+	}
+
+}
