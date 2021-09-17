@@ -156,4 +156,86 @@ definition {
 		LexiconEntry.viewNoEntry(rowEntry = "Account Name");
 	}
 
+	@description = "This test asserts that an Account Admin can add and unassign organization to an account"
+	@priority = "5"
+	test AccountAdminCanUnassignOrganizationToAccount {
+		User.logoutAndLoginPG(
+			userLoginEmailAddress = "test@liferay.com",
+			userLoginFullName = "Test Test");
+
+		JSONOrganization.addOrganization(
+			organizationName = "Organization for Account",
+			organizationSite = "true");
+
+		JSONOrganization.assignUserToOrganization(
+			organizationName = "Organization for Account",
+			userEmailAddress = "userea@liferay.com");
+
+		ApplicationsMenu.gotoPortlet(
+			category = "Users",
+			panel = "Control Panel",
+			portlet = "Users and Organizations");
+
+		UsersAndOrganizationsNavigator.gotoOrganizations();
+
+		Organization.assignOrgRoleCP(
+			orgName = "Organization for Account",
+			roleTitle = "Organization Administrator",
+			userFirstName = "userfn",
+			userLastName = "userln",
+			userScreenName = "usersn");
+
+		Accounts.openAccountsAdmin();
+
+		LexiconEntry.gotoEntry(rowEntry = "Account Name");
+
+		Accounts.assignOrganizations(
+			accountName = "Account Name",
+			assigneeName = "Organization for Account");
+
+		Accounts.addNewUserToBusinessAccount(
+			accountName = "Account Name",
+			assigneeName = "userfn1",
+			userEmailAddress = "userea1@liferay.com",
+			userFirstName = "userfn1",
+			userLastName = "userln1",
+			userScreenName = "usersn1");
+
+		JSONOrganization.assignUserToOrganization(
+			organizationName = "Organization for Account",
+			userEmailAddress = "userea1@liferay.com");
+
+		User.logoutAndLoginPG(
+			userLoginEmailAddress = "test@liferay.com",
+			userLoginFullName = "Test Test");
+
+		Navigator.gotoPage(pageName = "2B Account Page");
+
+		LexiconEntry.gotoEntry(rowEntry = "Account Name");
+
+		Accounts.gotoAssigneeTab(assigneeTab = "Organizations");
+
+		Accounts.removeOrganizationAsAssignee(
+			accountName = "Account Name",
+			assigneeName = "Organization for Account");
+
+		Navigator.gotoPage(pageName = "2B Account Page");
+
+		Accounts.viewNoAssignee(
+			accountName = "Account Name",
+			assigneeType = "Organizations");
+
+		User.logoutAndLoginPG(
+			userLoginEmailAddress = "userea1@liferay.com",
+			userLoginFullName = "userfn1 userln1");
+
+		Navigator.gotoPage(pageName = "2B Account Page");
+
+		LexiconEntry.gotoEntry(rowEntry = "Account Name");
+
+		AssertTextEquals(
+			locator1 = "Account#2B_ACCOUNT_MANAGEMENT_HEADING",
+			value1 = "ACCOUNT MANAGEMENT");
+	}
+
 }
