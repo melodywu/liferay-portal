@@ -4331,11 +4331,6 @@ definition {
 			pageName = "Staging Test Page",
 			siteName = "Staging Site");
 
-		AssertTextEquals(
-			key_portletName = "Nested Applications",
-			locator1 = "Portlet#TITLE",
-			value1 = "Nested Applications");
-
 		AssertTextNotEquals(
 			locator1 = "Message#INFO",
 			value1 = "Drag applications below to nest them.");
