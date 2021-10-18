@@ -1181,7 +1181,7 @@ definition {
 	macro tearDownCP {
 		ApplicationsMenu.gotoPortlet(
 			category = "Accounts",
-			panel = "Applications",
+			panel = "Control Panel",
 			portlet = "Accounts");
 
 		PortletEntry.selectAll();

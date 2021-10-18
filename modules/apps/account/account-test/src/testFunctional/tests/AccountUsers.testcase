@@ -33,7 +33,7 @@ definition {
 
 		ApplicationsMenu.gotoPortlet(
 			category = "Accounts",
-			panel = "Applications",
+			panel = "Control Panel",
 			portlet = "Account Users");
 
 		AccountUsers.addUser(
@@ -121,7 +121,7 @@ definition {
 
 		ApplicationsMenu.gotoPortlet(
 			category = "Accounts",
-			panel = "Applications",
+			panel = "Control Panel",
 			portlet = "Account Users");
 
 		Pagination.changePagination(itemsPerPage = "4");

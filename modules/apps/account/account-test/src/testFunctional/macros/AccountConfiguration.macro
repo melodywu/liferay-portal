@@ -29,7 +29,7 @@ definition {
 
 		ApplicationsMenu.gotoPortlet(
 			category = "Accounts",
-			panel = "Applications",
+			panel = "Control Panel",
 			portlet = "Accounts");
 
 		LexiconEntry.gotoEntry(rowEntry = "${accountName}");
