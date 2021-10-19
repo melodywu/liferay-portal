@@ -1099,6 +1099,8 @@ definition {
 			configurationName = "Accounts",
 			configurationScope = "Site Scope");
 
+		Pause(locator1 = "1000");
+
 		AssertElementPresent(locator1 = "FormFields#FIELD_ADD_REMOVE");
 
 		Click(locator1 = "FormFields#FIELD_ADD_REMOVE");
@@ -1124,6 +1126,8 @@ definition {
 				locator1 = "Button#UPDATE",
 				value1 = "Update");
 		}
+
+		Alert.viewSuccessMessage();
 	}
 
 	macro setDefaultBillingAddress {
