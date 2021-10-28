@@ -378,6 +378,47 @@ definition {
 		}
 	}
 
+	@description = "This test sets a valid domain for a business account. Account Admin can only add users with a valid domain"
+	@priority = "3"
+	test AccountAdminCanOnlyAddUserWithValidDomain {
+		task ("Login as Super User and enable email domain") {
+			User.logoutAndLoginPG(
+				userLoginEmailAddress = "test@liferay.com",
+				userLoginFullName = "Test Test");
+
+			AccountConfiguration.enableAccountEmailDomain();
+		}
+
+		task ("Add a account and go to Users tab in the Account Management Widget") {
+			Navigator.gotoPage(pageName = "2B Account Page");
+
+			Accounts.addBusinessAccount(
+				accountName = "AM Account",
+				domainNames = "liferay.com,gmail.com,9teen.com");
+		}
+
+		task ("Attempt to add user using the valid domain and assert that the new user is added into the account") {
+			Accounts.addNewUserWithValidDomain(
+				accountName = "AM Account",
+				assigneeName = "gmailUser",
+				emailDomainName = "gmail.com",
+				userEmailAddress = "userea@gmail.com",
+				userFirstName = "gmailUser",
+				userLastName = "gmailUser",
+				userScreenName = "User");
+
+			Navigator.gotoPage(pageName = "2B Account Page");
+
+			LexiconEntry.gotoEntryMenuItemNoError(
+				menuItem = "Manage Users",
+				rowEntry = "AM Account");
+
+			AssertElementPresent(
+				key_userName = "gmailUser",
+				locator1 = "Account#USER_TABLE_NAME");
+		}
+	}
+
 	@description = "This test asserts that an Account Admin can set a billing address to an Account."
 	@priority = "5"
 	test AccountAdminCanSetDefaultBillingAddress {
