@@ -140,6 +140,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>VALID_DOMAINS_MESSAGE</td>
+	<td>//div[contains(@class,' container-view')]//p[contains(@class,'text-muted')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>VALID_DOMAINS_REMOVE_TOOLTIP</td>
 	<td>//tr[contains(.,'${key_domainName}')]//span[contains(@class,' lfr-portal-tooltip')]</td>
 	<td></td>
