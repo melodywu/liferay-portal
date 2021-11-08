@@ -22,7 +22,7 @@
 </tr>
 <tr>
 	<td>PERMISSIONS_NAVITEM_SUBITEM</td>
-	<td>//a[contains(.,'${key_navItem}') and contains(@class,'permission-navigation-item-header')]/following-sibling::*//*[contains(@class,'permission-navigation')]/a[contains(.,'${key_subItem}')]</td>
+	<td>//ul[contains(@class,'permission-navigation-item-content')]//li[contains(@class,'permission-navigation-item-container')]//a[contains(.,'${key_subItem}')] | //a[contains(.,'${key_navItem}') and contains(@class,'permission-navigation-item-header')]/following-sibling::*//*[contains(@class,'permission-navigation')]/a[contains(.,'${key_subItem}')]</td>
 	<td></td>
 </tr>
 <tr>
