@@ -1250,6 +1250,8 @@ definition {
 	@description = "This test asserts that group scope permissions can be defined in the Roles Admin portlet."
 	@priority = "5"
 	test CanDefineGroupScopePermissionsInRolesAdmin {
+		property portal.acceptance = "melody";
+
 		task ("Create a new role through Roles Admin Portlet") {
 			Role.openRolesAdmin();
 
@@ -1272,6 +1274,8 @@ definition {
 			Check(locator1 = "RolesPermissions#ACCOUNTS_APPLICATION_PERMISSIONS_SELECT_ALL");
 
 			Button.clickSave();
+
+			Pause(locator1 = "1000");
 
 			AssertElementPresent(
 				key_permissionDefinitionValue = "All Sites and Asset Libraries",
