@@ -1321,7 +1321,7 @@ definition {
 		task ("Select All permissions for Resource Permissions for Account Users") {
 			var key_navItem = "Accounts";
 
-			var key_subItem = "Account Users";
+			var key_subItem = "Account Users1";
 
 			Click.clickAt(locator1 = "RolesPermissionsNavigation#PERMISSIONS_NAVITEM_COLLAPSED");
 
