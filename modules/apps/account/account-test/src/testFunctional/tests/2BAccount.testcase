@@ -1,7 +1,6 @@
 @component-name = "portal-user-management-and-portal-configuration"
 definition {
 
-	property portal.acceptance = "melody";
 	property portal.release = "true";
 	property portal.upstream = "true";
 	property testray.main.component.name = "Account";
@@ -200,6 +199,8 @@ definition {
 				userFirstName = "user1",
 				userLastName = "user1",
 				userScreenName = "user1");
+
+			Refresh();
 
 			WaitForElementPresent(
 				key_rowEntry = "user1 user1",
