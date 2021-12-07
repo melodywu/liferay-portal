@@ -4,7 +4,9 @@ definition {
 		Variables.assertDefined(parameterList = "${accountEntryName},${accountEntryType},${accountEntryStatus}");
 
 		var companyId = JSONCompany.getCompanyId();
+
 		var portalURL = JSONCompany.getPortalURL();
+
 		var userId = JSONUserSetter.setUserId(userEmailAddress = "${creatorEmailAddress}");
 
 		var curl = '''
@@ -38,7 +40,9 @@ definition {
 		}
 
 		var companyId = JSONCompany.getCompanyId();
+
 		var portalURL = JSONCompany.getPortalURL();
+
 		var userId = JSONUserSetter.setUserId(userEmailAddress = "${creatorEmailAddress}");
 
 		var curl = '''
