@@ -903,7 +903,7 @@ definition {
 
 		Accounts.viewAccountDetails(
 			accountName = "Test Test",
-			accountType = "Person");
+			accountType = "person");
 
 		CommerceLogin.speedwellLogout();
 

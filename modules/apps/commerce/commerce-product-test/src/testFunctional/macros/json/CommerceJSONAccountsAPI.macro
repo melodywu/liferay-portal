@@ -40,13 +40,13 @@ definition {
 			var accountName = "${accountName}";
 		}
 
-		if ("${accountType}" == "Guest") {
+		if ("${accountType}" == "guest") {
 			var accountTypeValue = "0";
 		}
-		else if ("${accountType}" == "Person") {
+		else if ("${accountType}" == "person") {
 			var accountTypeValue = "1";
 		}
-		else if ("${accountType}" == "Business") {
+		else if ("${accountType}" == "business") {
 			var accountTypeValue = "2";
 		}
 

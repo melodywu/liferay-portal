@@ -543,7 +543,7 @@ definition {
 		CommerceEntry.viewAccountsEntry(
 			accountEmail = "buyer@liferay.com",
 			accountName = "Guest Account 1",
-			accountType = "Guest",
+			accountType = "guest",
 			isAccountActive = "true");
 
 		Click(locator1 = "Icon#BACK");
@@ -553,7 +553,7 @@ definition {
 		CommerceEntry.viewAccountsEntry(
 			accountEmail = "buyer@liferay.com",
 			accountName = "Guest Account 2",
-			accountType = "Guest",
+			accountType = "guest",
 			isAccountActive = "true");
 	}
 
@@ -630,7 +630,7 @@ definition {
 
 		var guestAccountEmail = CommerceJSONAccountsAPI._getCommerceAccountEmail(
 			accountName = "Address Name",
-			accountType = "Guest");
+			accountType = "guest");
 
 		TestUtils.assertEquals(
 			actual = "${guestAccountEmail}",
@@ -786,7 +786,7 @@ definition {
 		CommerceEntry.viewAccountsEntry(
 			accountEmail = "buyer@liferay.com",
 			accountName = "Buyer User",
-			accountType = "Person",
+			accountType = "person",
 			isAccountActive = "true");
 
 		Click(locator1 = "Icon#BACK");
@@ -796,7 +796,7 @@ definition {
 		CommerceEntry.viewAccountsEntry(
 			accountEmail = "buyer@liferay.com",
 			accountName = "Guest Account",
-			accountType = "Guest",
+			accountType = "guest",
 			isAccountActive = "true");
 	}
 
@@ -1310,7 +1310,7 @@ definition {
 		CommerceEntry.viewAccountsEntry(
 			accountEmail = "buyer@liferay.com",
 			accountName = "Guest Account",
-			accountType = "Guest",
+			accountType = "guest",
 			isAccountActive = "true");
 
 		Click(locator1 = "Icon#BACK");
@@ -1320,7 +1320,7 @@ definition {
 		CommerceEntry.viewAccountsEntry(
 			accountEmail = "buyer@liferay.com",
 			accountName = "Buyer User",
-			accountType = "Person",
+			accountType = "person",
 			isAccountActive = "true");
 	}
 

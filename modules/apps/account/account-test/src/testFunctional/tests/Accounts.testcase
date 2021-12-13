@@ -576,7 +576,7 @@ definition {
 		Accounts.viewAccountDetails(
 			accountDescription = "This is a Person Account.",
 			accountName = "Person Account",
-			accountType = "Person");
+			accountType = "person");
 	}
 
 	@description = "This test adds a category to an account"
