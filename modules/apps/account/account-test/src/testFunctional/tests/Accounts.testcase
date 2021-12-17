@@ -156,7 +156,7 @@ definition {
 
 	@description = "This test makes sure that only one user can be assigned to a Person Account. When you add another person to a Person Account with assigned user, it will only replace the existing user and not add another one."
 	@priority = "4"
-	test AddingSecondUserToPersonAccountWillReplaceFirstUser {
+	test AddingSecondUserToPersonAccountWillReplaceFirstUsers {
 		property portal.acceptance = "true";
 
 		JSONAccountEntry.addAccountEntry(
