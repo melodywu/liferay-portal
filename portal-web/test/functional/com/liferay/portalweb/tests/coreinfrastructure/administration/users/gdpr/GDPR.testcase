@@ -1747,6 +1747,9 @@ definition {
 	@description = "This test changes pagination and assert entries display properly."
 	@priority = "2"
 	test PaginationWorksInNewDataExport {
+		property portal.acceptance = "melody";
+		property test.name.skip.portal.instance = "GDPR#PaginationWorksInNewDataExport";
+
 		task ("Bring up the New Data Export page") {
 			User.openUsersAdmin();
 
