@@ -33,6 +33,7 @@ definition {
 	@priority = "4"
 	test AddUserGroupRegRole {
 		property custom.properties = "jsonws.web.service.paths.excludes=";
+		property portal.acceptance = "melody";
 
 		Permissions.setUpRegRoleLoginUserCP(
 			roleTitle = "Regrole Name",

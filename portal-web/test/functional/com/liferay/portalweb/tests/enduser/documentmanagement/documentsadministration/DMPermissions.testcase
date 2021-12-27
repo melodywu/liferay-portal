@@ -2320,6 +2320,7 @@ definition {
 	test ViewDocumentsAndMediaPortletRegRole {
 		property custom.properties = "jsonws.web.service.paths.excludes=";
 		property portal.acceptance = "true";
+		property portal.acceptance = "melody";
 		property test.name.skip.portal.instance = "DMPermissions#ViewDocumentsAndMediaPortletRegRole";
 
 		Permissions.setUpRegRoleLoginUserCP(

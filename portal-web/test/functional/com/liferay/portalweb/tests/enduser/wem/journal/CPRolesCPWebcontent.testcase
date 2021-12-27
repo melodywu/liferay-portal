@@ -38,6 +38,7 @@ definition {
 	@priority = "5"
 	test AddFolderSiteRoleDefaultPermission {
 		property portal.acceptance = "true";
+		property portal.acceptance = "melody";
 
 		Permissions.setUpSiteRoleCP(
 			page = "Public Pages",
@@ -83,6 +84,7 @@ definition {
 	@priority = "5"
 	test AddFolderSiteRoleDefinePermission {
 		property portal.acceptance = "true";
+		property portal.acceptance = "melody";
 		property test.name.skip.portal.instance = "CPRolesCPWebcontent#AddFolderSiteRoleDefinePermission";
 
 		Permissions.setUpSiteRoleCP(
@@ -190,6 +192,7 @@ definition {
 	@priority = "5"
 	test AddStructureSiteRoleDefaultPermission {
 		property portal.acceptance = "true";
+		property portal.acceptance = "melody";
 
 		Permissions.setUpSiteRoleCP(
 			page = "Public Pages",
@@ -235,6 +238,7 @@ definition {
 	@priority = "5"
 	test AddStructureSiteRoleDefinePermission {
 		property portal.acceptance = "true";
+		property portal.acceptance = "melody";
 		property test.name.skip.portal.instance = "CPRolesCPWebcontent#AddStructureSiteRoleDefinePermission";
 
 		Permissions.setUpSiteRoleCP(
@@ -319,6 +323,7 @@ definition {
 	@priority = "5"
 	test AddTemplateSiteRoleDefaultPermission {
 		property portal.acceptance = "true";
+		property portal.acceptance = "melody";
 		property test.name.skip.portal.instance = "CPRolesCPWebcontent#AddTemplateSiteRoleDefaultPermission";
 
 		Permissions.setUpSiteRoleCP(
@@ -365,6 +370,7 @@ definition {
 	@priority = "5"
 	test AddTemplateSiteRoleDefinePermission {
 		property portal.acceptance = "true";
+		property portal.acceptance = "melody";
 		property test.name.skip.portal.instance = "CPRolesCPWebcontent#AddTemplateSiteRoleDefinePermission";
 
 		Permissions.setUpSiteRoleCP(
@@ -488,6 +494,7 @@ definition {
 	@priority = "5"
 	test AddWebContentSiteRoleDefinePermission {
 		property portal.acceptance = "true";
+		property portal.acceptance = "melody";
 		property test.name.skip.portal.instance = "CPRolesCPWebcontent#AddWebContentSiteRoleDefinePermission";
 
 		Permissions.setUpSiteRoleCP(
@@ -574,6 +581,7 @@ definition {
 	@priority = "4"
 	test ViewWebContentPortletRegRole {
 		property custom.properties = "jsonws.web.service.paths.excludes=";
+		property portal.acceptance = "melody";
 
 		Permissions.setUpRegRoleLoginUserCP(
 			roleTitle = "Regrole Name",

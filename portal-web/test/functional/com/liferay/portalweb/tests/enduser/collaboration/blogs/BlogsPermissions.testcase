@@ -39,6 +39,7 @@ definition {
 	@refactordone
 	test CanAccessAdminWithRegRole {
 		property custom.properties = "jsonws.web.service.paths.excludes=";
+		property portal.acceptance = "melody";
 
 		Permissions.setUpRegRoleLoginUserCP(
 			roleTitle = "Regrole Name",
@@ -1345,6 +1346,7 @@ definition {
 	@refactorneeded
 	test CannotSubscribeToEntryWhenRegRoleHasNoPermissions {
 		property custom.properties = "jsonws.web.service.paths.excludes=";
+		property portal.acceptance = "melody";
 		property portal.acceptance = "true";
 		property test.name.skip.portal.instance = "BlogsPermissions#CannotSubscribeToEntryWhenRegRoleHasNoPermissions";
 

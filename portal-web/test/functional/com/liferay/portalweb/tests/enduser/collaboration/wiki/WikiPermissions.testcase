@@ -49,6 +49,8 @@ definition {
 	@priority = "4"
 	@refactordone
 	test CanDeleteWikiNodeWithPermissions {
+		property portal.acceptance = "melody";
+
 		Permissions.setUpRegRoleLoginUserCP(
 			roleTitle = "Regrole Name",
 			userEmailAddress = "userea@liferay.com",
@@ -163,6 +165,8 @@ definition {
 	@priority = "4"
 	@refactordone
 	test CanEditWikiNodeWithPermissions {
+		property portal.acceptance = "melody";
+
 		Permissions.setUpRegRoleLoginUserCP(
 			roleTitle = "Regrole Name",
 			userEmailAddress = "userea@liferay.com",
@@ -292,6 +296,7 @@ definition {
 	@refactordone
 	test CannotAddWikiAssetsWithRegularRoleWithoutPermissions {
 		property custom.properties = "jsonws.web.service.paths.excludes=";
+		property portal.acceptance = "melody";
 
 		Permissions.setUpRegRoleLoginUserCP(
 			roleTitle = "Regrole Name",
