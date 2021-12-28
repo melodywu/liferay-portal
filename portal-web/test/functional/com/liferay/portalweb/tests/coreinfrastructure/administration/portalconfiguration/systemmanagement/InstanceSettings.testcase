@@ -704,8 +704,6 @@ definition {
 
 		PortalSettings.editConfigurationUsersDefaultUserAssociationsCP(orgName = "Organization Name");
 
-		PortalSettings.viewConfigurationUsersDefaultUserAssociationsOrganizationSitesCP(orgName = "Organization Name");
-
 		JSONUser.addUser(
 			userEmailAddress = "userea@liferay.com",
 			userFirstName = "userfn",
@@ -737,8 +735,6 @@ definition {
 
 		PortalSettings.editConfigurationUsersDefaultUserAssociationsCP(roleTitle = "Roles Regrole Name");
 
-		PortalSettings.viewConfigurationUsersDefaultUserAssociationsRolesCP(roleTitle = "Roles Regrole Name");
-
 		JSONUser.addUser(
 			userEmailAddress = "userea@liferay.com",
 			userFirstName = "userfn",
@@ -768,8 +764,6 @@ definition {
 
 		PortalSettings.editConfigurationUsersDefaultUserAssociationsCP(siteName = "Site Name");
 
-		PortalSettings.viewConfigurationUsersDefaultUserAssociationsSitesCP(siteName = "Site Name");
-
 		JSONUser.addUser(
 			userEmailAddress = "userea@liferay.com",
 			userFirstName = "userfn",
@@ -798,8 +792,6 @@ definition {
 		UserGroup.addCP(userGroupName = "UG UserGroup Name");
 
 		PortalSettings.editConfigurationUsersDefaultUserAssociationsCP(userGroupName = "UG UserGroup Name");
-
-		PortalSettings.viewConfigurationUsersDefaultUserAssociationsUserGroupsCP(userGroupName = "UG UserGroup Name");
 
 		JSONUser.addUser(
 			userEmailAddress = "userea@liferay.com",
