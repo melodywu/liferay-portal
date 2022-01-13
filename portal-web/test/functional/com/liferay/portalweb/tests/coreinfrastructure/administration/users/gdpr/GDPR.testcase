@@ -1790,9 +1790,7 @@ definition {
 					}
 				}
 				else if ("${listEntries}" == "8") {
-					if (!(
-
-					Pagination.viewResults(results = "Showing 1 to 8 of 8 entries.");)) {
+					if (!(IsElementPresent(locator1 = "Pagination#PREVIOUS_LINK", results = "Showing 1 to 8 of 8 entries."))) {
 						Click(locator1 = "Pagination#PREVIOUS_LINK");
 					}
 
