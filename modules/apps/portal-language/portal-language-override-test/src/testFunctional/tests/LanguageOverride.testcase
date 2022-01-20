@@ -63,7 +63,7 @@ definition {
 				translationOverrideValueList = "Text contains error,Le texte contient une erreur,O texto contÃƒÂ©m erro,El texto contiene error");
 		}
 
-		task ("When the language key is successfully saved search it in search bar") {
+		task ("When the language key is successfully saved and search existing keys in search bar") {
 			Search.searchCP(searchTerm = "text-contains-error");
 		}
 
@@ -81,6 +81,37 @@ definition {
 			AssertTextEquals(
 				locator1 = "LanguageOverride#VIEW_PAGE_SEARCH_RESULTS_MESSAGE",
 				value1 = "1 Results for text-contains-error");
+		}
+	}
+
+	@description = "This test can search existing translations and view it in the main view page."
+	@priority = "5"
+	test CanSearchForTranslations {
+		task ("Given that add a language key") {
+			LanguageOverride.addLanguageKey(
+				languageKey = "text-contains-error",
+				translationOverrideList = "en-US,fr-FR,pt-BR,es-ES",
+				translationOverrideValueList = "Text contains error,Le texte contient une erreur,O texto contÃƒÂ©m erro,El texto contiene error");
+		}
+
+		task ("When the language key is successfully saved and search existing translations in search bar") {
+			Search.searchCP(searchTerm = "Text contains error");
+		}
+
+		task ("Then the language key can be viewed in the View page and there is results message") {
+			AssertTextEquals(
+				key_languageKey = "text-contains-error",
+				locator1 = "LanguageOverride#VIEW_PAGE_LANGUAGE_KEY",
+				value1 = "text-contains-error");
+
+			AssertTextEquals(
+				key_translation = "Text contains error",
+				locator1 = "LanguageOverride#VIEW_PAGE_LANGUAGE_KEY_TRANSLATION",
+				value1 = "Text contains error");
+
+			AssertTextEquals(
+				locator1 = "LanguageOverride#VIEW_PAGE_SEARCH_RESULTS_MESSAGE",
+				value1 = "1 Results for Text contains error");
 		}
 	}
 
