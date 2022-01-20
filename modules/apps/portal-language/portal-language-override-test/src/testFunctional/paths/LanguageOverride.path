@@ -27,6 +27,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>VIEW_PAGE_SEARCH_RESULTS_MESSAGE</td>
+	<td>//div[contains(@class,'tbar-section')]/span[contains(@class,'component-text')]/span[contains(@class,'text-truncate')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td></td>
 	<td></td>
 	<td></td>
