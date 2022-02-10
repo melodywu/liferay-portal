@@ -1785,7 +1785,7 @@ definition {
 
 					Click(locator1 = "Pagination#NEXT_LINK");
 
-					Pagination.viewResults(results = "Showing 5 to 8 of 10 entries.");
+					Pagination.viewResults(results = "Showing 5 to 9 of 10 entries.");
 
 					for (var listedEntries : list "Documents and Media,Forms,Web Content,Message Boards") {
 						LexiconEntry.viewEntryName(rowEntry = "${listedEntries}");
