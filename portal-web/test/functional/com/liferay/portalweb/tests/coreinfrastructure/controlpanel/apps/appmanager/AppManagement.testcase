@@ -552,6 +552,63 @@ definition {
 			appStatus = "Active");
 	}
 
+	@description = "This assert that there are Categories, Liferay Version, Price filters in marketplace store."
+	@priority = "5"
+	test FilterMarketplaceStoreApps {
+		property portal.acceptance = "melody";
+
+		task ("When login marketplace store") {
+			ApplicationsMenu.gotoPortlet(
+				category = "Marketplace",
+				panel = "Control Panel",
+				portlet = "Store");
+
+			AssertClick(
+				locator1 = "UserBar#USER_SIGN_IN",
+				value1 = "Sign In");
+
+			var marketplaceClientId = PropsUtil.get("marketplace.email.address.6");
+
+			Type(
+				key_text = "Email Address",
+				locator1 = "TextInput#ANY",
+				value1 = "${marketplaceClientId}");
+
+			var marketplaceClientSecret = PropsUtil.get("marketplace.email.password.6");
+
+			Type(
+				key_text = "Password",
+				locator1 = "TextInput#ANY",
+				value1 = "${marketplaceClientSecret}");
+
+			AssertClick(
+				locator1 = "Button#SIGN_IN",
+				value1 = "Sign In");
+
+			AssertClick(
+				locator1 = "Button#SUBMIT_FOR_GRANT_ACCESS",
+				value1 = "Grant Access");
+
+			Pause(locator1 = "3000");
+
+			WaitForPageLoad();
+		}
+
+		task ("Then assert that there are Categories, Liferay Version, Price filters in marketplace store") {
+			AppManager.filtersApp(
+				filterBy = " Templates and Themes ",
+				filterName = "Category");
+
+			AppManager.filtersApp(
+				filterBy = "Liferay Portal 6.1 CE GA3",
+				filterName = "Liferay Version");
+
+			AppManager.filtersApp(
+				filterBy = " Free ",
+				filterName = "Price");
+		}
+	}
+
 	@priority = "5"
 	test InstallViaUploadIsSuccessful {
 		property test.name.skip.portal.instance = "AppManagement#InstallViaUploadIsSuccessful";
