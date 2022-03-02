@@ -32,6 +32,37 @@
 	<td>//ul[contains(@class,'breadcrumb-horizontal')]/li[2]/a[contains(.,'${key_breadCrumb}')]</td>
 	<td></td>
 </tr>
+<!--APP_STORE-->
+<tr>
+	<td>APP_FILTER_LABEL</td>
+	<td>//span[contains(@class,'aui-field-select')]/span[contains(@class,'aui-field-content')]/label[contains(.,'${key_filterName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>APP_FILTER_SELECT</td>
+	<td>//span[contains(@class,'aui-field-content')]/label[contains(.,'${key_filterName}')]//following-sibling::span[contains(@class,'aui-field-element')]/select</td>
+	<td></td>
+</tr>
+<tr>
+	<td>APP_FILTER_SELECT_OPTION</td>
+	<td>//span[contains(@class,'aui-field-content')]/label[contains(.,'${key_filterName}')]//following-sibling::span[contains(@class,'aui-field-element')]/select/option[contains(.,'${key_filterBy}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>APP_RESULT_FILTER</td>
+	<td>//div[contains(@class,'marketplace-entry-tile')]/div//following-sibling::ul/li[contains(.,'${key_filterName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>MARKETPLACE_TITLE</td>
+	<td>//div[contains(@class,'banner-content')]/a[contains(@title,'liferay-marketplace')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
 </tbody>
 </table>
 </body>
