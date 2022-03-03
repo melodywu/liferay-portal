@@ -552,12 +552,12 @@ definition {
 			appStatus = "Active");
 	}
 
-	@description = "This assert that there are Categories, Liferay Version, Price filters in marketplace store."
+	@description = "This test assert that there are Categories, Liferay Version, Price filters in marketplace store."
 	@priority = "5"
 	test FilterMarketplaceStoreApps {
-		property portal.acceptance = "melody";
-
 		task ("When login marketplace store") {
+			property portal.acceptance = "melody";
+
 			ApplicationsMenu.gotoPortlet(
 				category = "Marketplace",
 				panel = "Control Panel",
@@ -567,19 +567,19 @@ definition {
 				locator1 = "UserBar#USER_SIGN_IN",
 				value1 = "Sign In");
 
-			var marketplaceClientId = PropsUtil.get("marketplace.email.address.6");
+			//var marketplaceClientId = PropsUtil.get("marketplace.email.address.6");
 
 			Type(
 				key_text = "Email Address",
 				locator1 = "TextInput#ANY",
-				value1 = "${marketplaceClientId}");
+				value1 = "melody.wu@liferay.com");
 
-			var marketplaceClientSecret = PropsUtil.get("marketplace.email.password.6");
+			//var marketplaceClientSecret = PropsUtil.get("marketplace.email.password.6");
 
 			Type(
 				key_text = "Password",
 				locator1 = "TextInput#ANY",
-				value1 = "${marketplaceClientSecret}");
+				value1 = "c36b08604ywq");
 
 			AssertClick(
 				locator1 = "Button#SIGN_IN",
@@ -654,6 +654,117 @@ definition {
 		AssertTextEquals.assertPartialText(
 			locator1 = "Message#ERROR_1",
 			value1 = "Error:Please upload a file with a valid extension (JAR, LPKG, or WAR File).");
+	}
+
+	@description = "This test check search apps in marketplace store and check sign in and sign out."
+	@priority = "5"
+	test SearchMarketplaceStore {
+		task ("When login marketplace store and check user logged") {
+			property portal.acceptance = "melody";
+
+			ApplicationsMenu.gotoPortlet(
+				category = "Marketplace",
+				panel = "Control Panel",
+				portlet = "Store");
+
+			AssertElementPresent(
+				locator1 = "AppManager#MARKETPLACE_DESCRIPTION",
+				value1 = "Liferay Marketplace is an integral part of the Liferay platform experience for all users. Enterprise subscribers also have exclusive access to Liferay Subscription Apps through the Liferay Marketplace. Log in with your Liferay account to browse hundreds of apps to help you build your business or technical solution.");
+
+			AssertClick(
+				locator1 = "UserBar#USER_SIGN_IN",
+				value1 = "Sign In");
+
+			//var marketplaceClientId = PropsUtil.get("marketplace.email.address.6");
+
+			Type(
+				key_text = "Email Address",
+				locator1 = "TextInput#ANY",
+				value1 = "melody.wu@liferay.com");
+
+			//var marketplaceClientSecret = PropsUtil.get("marketplace.email.password.6");
+
+			Type(
+				key_text = "Password",
+				locator1 = "TextInput#ANY",
+				value1 = "c36b08604ywq");
+
+			AssertClick(
+				locator1 = "Button#SIGN_IN",
+				value1 = "Sign In");
+
+			AssertClick(
+				locator1 = "Button#SUBMIT_FOR_GRANT_ACCESS",
+				value1 = "Grant Access");
+
+			Navigator.openSpecificURL(url = "https://web.liferay.com/marketplace");
+
+			Pause(locator1 = "3000");
+
+			WaitForPageLoad();
+
+			AssertElementPresent(locator1 = "AppManager#APP_RESULT_BOX");
+
+			Navigator.openURL();
+
+			ApplicationsMenu.gotoPortlet(
+				category = "Marketplace",
+				panel = "Control Panel",
+				portlet = "Purchased");
+
+			AssertElementPresent(
+				locator1 = "UserBar#USER_SIGN_OUT",
+				value1 = "Sign Out");
+		}
+
+		task ("Then go to marketplace store and search apps and purchase") {
+			ApplicationsMenu.gotoPortlet(
+				category = "Marketplace",
+				panel = "Control Panel",
+				portlet = "Store");
+
+			Navigator.openSpecificURL(url = "https://web.liferay.com/marketplace");
+
+			WaitForPageLoad();
+
+			AppManager.searchApp(searchName = "No Robots");
+		}
+
+		task ("Then logout marketplace store") {
+			Navigator.openURL();
+
+			ApplicationsMenu.gotoPortlet(
+				category = "Marketplace",
+				panel = "Control Panel",
+				portlet = "Store");
+
+			ScrollBy(value1 = "0, 2000");
+
+			AssertClick(
+				locator1 = "UserBar#USER_SIGN_OUT",
+				value1 = "Sign Out");
+
+			AssertElementPresent(
+				locator1 = "UserBar#USER_SIGN_IN",
+				value1 = "Sign In");
+
+			AssertElementPresent(
+				locator1 = "AppManager#MARKETPLACE_DESCRIPTION",
+				value1 = "Liferay Marketplace is an integral part of the Liferay platform experience for all users. Enterprise subscribers also have exclusive access to Liferay Subscription Apps through the Liferay Marketplace. Log in with your Liferay account to browse hundreds of apps to help you build your business or technical solution.");
+
+			ApplicationsMenu.gotoPortlet(
+				category = "Marketplace",
+				panel = "Control Panel",
+				portlet = "Purchased");
+
+			AssertElementPresent(
+				locator1 = "UserBar#USER_SIGN_IN",
+				value1 = "Sign In");
+
+			AssertElementPresent(
+				locator1 = "AppManager#MARKETPLACE_DESCRIPTION",
+				value1 = "Liferay Marketplace is an integral part of the Liferay platform experience for all users. Enterprise subscribers also have exclusive access to Liferay Subscription Apps through the Liferay Marketplace. Log in with your Liferay account to browse hundreds of apps to help you build your business or technical solution.");
+		}
 	}
 
 	@priority = "5"
