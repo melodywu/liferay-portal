@@ -727,7 +727,7 @@
 </tr>
 <tr>
 	<td>SEARCH</td>
-	<td>//*[@data-qa-id='searchButton'] | //button[contains(.,'Search')]</td>
+	<td>//*[@data-qa-id='searchButton'] | //button[contains(.,'Search')] | //input[contains(@value,'Search')]</td>
 	<td></td>
 </tr>
 <tr>
