@@ -553,7 +553,7 @@ definition {
 	}
 
 	@description = "This test assert that there are Categories, Liferay Version, Price filters in marketplace store."
-	@priority = "5"
+	@priority = "3"
 	test FilterMarketplaceStoreApps {
 		task ("When login marketplace store") {
 			property portal.acceptance = "melody";
@@ -567,14 +567,10 @@ definition {
 				locator1 = "UserBar#USER_SIGN_IN",
 				value1 = "Sign In");
 
-			//var marketplaceClientId = PropsUtil.get("marketplace.email.address.6");
-
 			Type(
 				key_text = "Email Address",
 				locator1 = "TextInput#ANY",
 				value1 = "melody.wu@liferay.com");
-
-			//var marketplaceClientSecret = PropsUtil.get("marketplace.email.password.6");
 
 			Type(
 				key_text = "Password",
@@ -657,7 +653,7 @@ definition {
 	}
 
 	@description = "This test check search apps in marketplace store and check sign in and sign out."
-	@priority = "5"
+	@priority = "3"
 	test SearchMarketplaceStore {
 		task ("When login marketplace store and check user logged") {
 			property portal.acceptance = "melody";
@@ -675,14 +671,10 @@ definition {
 				locator1 = "UserBar#USER_SIGN_IN",
 				value1 = "Sign In");
 
-			//var marketplaceClientId = PropsUtil.get("marketplace.email.address.6");
-
 			Type(
 				key_text = "Email Address",
 				locator1 = "TextInput#ANY",
 				value1 = "melody.wu@liferay.com");
-
-			//var marketplaceClientSecret = PropsUtil.get("marketplace.email.password.6");
 
 			Type(
 				key_text = "Password",
@@ -812,6 +804,71 @@ definition {
 		LicenseManager.viewDefaultCP(tableTexts = "Server Info,Host Name,IP Addresses,Licenses Registered,Owner,Start Date");
 
 		AssertElementNotPresent(locator1 = "Portlet#HEADER_DUPLICATE");
+	}
+
+	@description = "This test check purchase apps in marketplace store and view in purchased."
+	@priority = "3"
+	test ViewPurchasedApp {
+		task ("When login marketplace store and check user logged") {
+			property portal.acceptance = "melody";
+
+			ApplicationsMenu.gotoPortlet(
+				category = "Marketplace",
+				panel = "Control Panel",
+				portlet = "Store");
+
+			AssertClick(
+				locator1 = "UserBar#USER_SIGN_IN",
+				value1 = "Sign In");
+
+			Type(
+				key_text = "Email Address",
+				locator1 = "TextInput#ANY",
+				value1 = "melody.wu@liferay.com");
+
+			Type(
+				key_text = "Password",
+				locator1 = "TextInput#ANY",
+				value1 = "c36b08604ywq");
+
+			AssertClick(
+				locator1 = "Button#SIGN_IN",
+				value1 = "Sign In");
+
+			AssertClick(
+				locator1 = "Button#SUBMIT_FOR_GRANT_ACCESS",
+				value1 = "Grant Access");
+
+			Navigator.openSpecificURL(url = "https://web.liferay.com/marketplace");
+
+			Pause(locator1 = "3000");
+
+			WaitForPageLoad();
+		}
+
+		task ("Then go to marketplace store and search apps and purchase") {
+			AppManager.searchApp(searchName = "Control Panel Documentation");
+
+			WaitForPageLoad();
+
+			AppManager.purchaseApp(
+				searchName = "Control Panel Documentation",
+				type = "Free");
+		}
+
+		task ("Then view purchased app in purchased portlet") {
+			AssertClick(
+				locator1 = "AppManager#SEE_PURCHASED_BUTTON",
+				value1 = "See Purchased");
+
+			WaitForPageLoad();
+
+			SelectFrame.selectFrameNoLoading(locator1 = "IFrame#MARKETPLACE_PORTLET_IFRAME");
+
+			AssertElementPresent(
+				key_searchName = "Control Panel Documentation",
+				locator1 = "AppManager#APP_TITLE_1");
+		}
 	}
 
 }
