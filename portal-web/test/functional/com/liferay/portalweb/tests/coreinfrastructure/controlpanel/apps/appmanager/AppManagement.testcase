@@ -563,29 +563,7 @@ definition {
 				panel = "Control Panel",
 				portlet = "Store");
 
-			AssertClick(
-				locator1 = "UserBar#USER_SIGN_IN",
-				value1 = "Sign In");
-
-			Type(
-				key_text = "Email Address",
-				locator1 = "TextInput#ANY",
-				value1 = "melody.wu@liferay.com");
-
-			Type(
-				key_text = "Password",
-				locator1 = "TextInput#ANY",
-				value1 = "c36b08604ywq");
-
-			AssertClick(
-				locator1 = "Button#SIGN_IN",
-				value1 = "Sign In");
-
-			AssertClick(
-				locator1 = "Button#SUBMIT_FOR_GRANT_ACCESS",
-				value1 = "Grant Access");
-
-			Pause(locator1 = "3000");
+			AppManager.loginMarketplaceStore();
 
 			WaitForPageLoad();
 		}
@@ -663,35 +641,7 @@ definition {
 				panel = "Control Panel",
 				portlet = "Store");
 
-			AssertElementPresent(
-				locator1 = "AppManager#MARKETPLACE_DESCRIPTION",
-				value1 = "Liferay Marketplace is an integral part of the Liferay platform experience for all users. Enterprise subscribers also have exclusive access to Liferay Subscription Apps through the Liferay Marketplace. Log in with your Liferay account to browse hundreds of apps to help you build your business or technical solution.");
-
-			AssertClick(
-				locator1 = "UserBar#USER_SIGN_IN",
-				value1 = "Sign In");
-
-			Type(
-				key_text = "Email Address",
-				locator1 = "TextInput#ANY",
-				value1 = "melody.wu@liferay.com");
-
-			Type(
-				key_text = "Password",
-				locator1 = "TextInput#ANY",
-				value1 = "c36b08604ywq");
-
-			AssertClick(
-				locator1 = "Button#SIGN_IN",
-				value1 = "Sign In");
-
-			AssertClick(
-				locator1 = "Button#SUBMIT_FOR_GRANT_ACCESS",
-				value1 = "Grant Access");
-
-			Navigator.openSpecificURL(url = "https://web.liferay.com/marketplace");
-
-			Pause(locator1 = "3000");
+			AppManager.loginMarketplaceStore();
 
 			WaitForPageLoad();
 
@@ -817,31 +767,7 @@ definition {
 				panel = "Control Panel",
 				portlet = "Store");
 
-			AssertClick(
-				locator1 = "UserBar#USER_SIGN_IN",
-				value1 = "Sign In");
-
-			Type(
-				key_text = "Email Address",
-				locator1 = "TextInput#ANY",
-				value1 = "melody.wu@liferay.com");
-
-			Type(
-				key_text = "Password",
-				locator1 = "TextInput#ANY",
-				value1 = "c36b08604ywq");
-
-			AssertClick(
-				locator1 = "Button#SIGN_IN",
-				value1 = "Sign In");
-
-			AssertClick(
-				locator1 = "Button#SUBMIT_FOR_GRANT_ACCESS",
-				value1 = "Grant Access");
-
-			Navigator.openSpecificURL(url = "https://web.liferay.com/marketplace");
-
-			Pause(locator1 = "3000");
+			AppManager.loginMarketplaceStore();
 
 			WaitForPageLoad();
 		}
