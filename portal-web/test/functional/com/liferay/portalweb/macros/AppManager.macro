@@ -1,6 +1,6 @@
 definition {
 
-	macro activateApp {
+	macro activateAppa {
 		LexiconEntry.openEntryMenu(rowEntry = "${appName}");
 
 		MenuItem.clickNoError(menuItem = "Activate");
