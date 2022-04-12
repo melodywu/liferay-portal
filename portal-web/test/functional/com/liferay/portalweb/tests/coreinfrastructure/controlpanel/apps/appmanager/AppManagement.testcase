@@ -574,7 +574,7 @@ definition {
 
 	@description = "This test attempts to install an app by uploading a file that is invalid. Error message is asserted."
 	@priority = "3"
-	test InvalidFileShouldNotBeUploaded {
+	test InvalidFileShouldNotBeUploadeds {
 		ApplicationsMenu.gotoPortlet(
 			category = "System",
 			panel = "Control Panel",
