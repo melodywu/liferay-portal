@@ -115,6 +115,29 @@ definition {
 		LexiconEntry.viewNoEntry(rowEntry = "${accountGroupName}");
 	}
 
+	macro unassign {
+		if (isSet(assigneeAll)) {
+			PortletEntry.selectAll();
+		}
+		else {
+			for (var unassigneeNames : list "${unassigneeNames}") {
+				Search.searchCP(searchTerm = "${unassigneeNames}");
+
+				Check(
+					key_tableEntry = "${unassigneeNames}",
+					locator1 = "LexiconTable#TABLE_ENTRY_CHECKBOX");
+			}
+		}
+
+		ClickNoError(locator1 = "Icon#DELETE");
+
+		AssertConfirm(value1 = "Are you sure you want to remove the selected accounts?");
+
+		Alert.viewSuccessMessage();
+
+		LexiconEntry.viewNoEntry(rowEntry = "${unassigneeNames}");
+	}
+
 	macro viewAssignee {
 		AssertElementPresent(
 			key_tab = "Accounts",
