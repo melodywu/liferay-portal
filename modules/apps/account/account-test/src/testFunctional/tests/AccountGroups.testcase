@@ -202,7 +202,10 @@ definition {
 				accountGroupName = "AG Name with Accounts",
 				assigneeNames = "Account for Account Group");
 
-			AccountGroups.viewAssignee(assigneeName = "Account for Account Group");
+			AssertTextEquals.assertPartialText(
+				key_tableEntry = "Account for Account Group",
+				locator1 = "LexiconTable#TABLE_ENTRY",
+				value1 = "Account for Account Group");
 		}
 	}
 
