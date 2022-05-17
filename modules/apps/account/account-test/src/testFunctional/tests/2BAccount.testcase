@@ -71,7 +71,7 @@ definition {
 
 	@description = "This test adds the Add Account Entry permission to Account Admin and assert user can add an account."
 	@priority = "5"
-	test AccountAdminCanAddAccount {
+	test AccountAdminCanAddAccounts {
 		property portal.acceptance = "true";
 
 		User.logoutAndLoginPG(
@@ -252,7 +252,7 @@ definition {
 
 	@description = "This test asserts that an Account can be deleted."
 	@priority = "4"
-	test AccountAdminCanDeleteAccount {
+	test AccountAdminCanDeleteAccount3 {
 		property portal.acceptance = "true";
 
 		Permissions.definePermissionViaJSONAPI(
