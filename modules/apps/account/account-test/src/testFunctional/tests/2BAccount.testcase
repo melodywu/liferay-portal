@@ -330,34 +330,34 @@ definition {
 				userEmailAddress = "userea@liferay.com");
 		}
 
-		task ("Sign back in as Account Admin and edit the other user name") {
-			User.logoutAndLoginPG(
-				userLoginEmailAddress = "userea@liferay.com",
-				userLoginFullName = "userfn userln");
+		// task ("Sign back in as Account Admin and edit the other user name") {
+		// 	User.logoutAndLoginPG(
+		// 		userLoginEmailAddress = "userea@liferay.com",
+		// 		userLoginFullName = "userfn userln");
 
-			Navigator.gotoPage(pageName = "2B Account Page");
+		// 	Navigator.gotoPage(pageName = "2B Account Page");
 
-			LexiconEntry.gotoEntry(rowEntry = "Account Name");
+		// 	LexiconEntry.gotoEntry(rowEntry = "Account Name");
 
-			Navigator.gotoNavTab(navTab = "Users");
+		// 	Navigator.gotoNavTab(navTab = "Users");
 
-			AccountUsers.editUser(
-				accountManagementWidget = "true",
-				accountUser = "userfn1 userln1",
-				editFirstName = "userEdit");
-		}
+		// 	AccountUsers.editUser(
+		// 		accountManagementWidget = "true",
+		// 		accountUser = "userfn1 userln1",
+		// 		editFirstName = "userEdit");
+		// }
 
-		task ("Assert that the user has the edited first name and the original name cannot be found") {
-			Navigator.gotoPage(pageName = "2B Account Page");
+		// task ("Assert that the user has the edited first name and the original name cannot be found") {
+		// 	Navigator.gotoPage(pageName = "2B Account Page");
 
-			LexiconEntry.gotoEntry(rowEntry = "Account Name");
+		// 	LexiconEntry.gotoEntry(rowEntry = "Account Name");
 
-			Navigator.gotoNavTab(navTab = "Users");
+		// 	Navigator.gotoNavTab(navTab = "Users");
 
-			LexiconEntry.viewEntryName(rowEntry = "userEdit userln1");
+		// 	LexiconEntry.viewEntryName(rowEntry = "userEdit userln1");
 
-			LexiconEntry.viewNoEntry(rowEntry = "userfn1 userln1");
-		}
+		// 	LexiconEntry.viewNoEntry(rowEntry = "userfn1 userln1");
+		// }
 	}
 
 	@description = "This test asserts that an Account Admin cannot add a user wtih an email domain that is blocked."
@@ -1685,6 +1685,125 @@ definition {
 					locator1 = "ContentRow#ENTRY_CONTENT_ROW_NUMBER_TD",
 					value1 = "Account Administrator, Test Account Role");
 			}
+		}
+	}
+
+	@description = "This test asserts that the User's available views and actions within the page shall reflect the permissions of the Role in the Selected Account."
+	@priority = "5"
+	test ThePageViewsAndActionsAreConsistentWithRolesPermissionsInSelectedAccount {
+		task ("Given add two accounts a new user and a regular role with view and update permissions") {
+			User.logoutAndLoginPG(
+				userLoginEmailAddress = "test@liferay.com",
+				userLoginFullName = "Test Test");
+
+			JSONUser.addUser(
+				userEmailAddress = "userea2@liferay.com",
+				userFirstName = "userfn2",
+				userLastName = "userln2",
+				userScreenName = "usersn2");
+
+			JSONUser.setFirstPassword(
+				agreeToTermsAndAnswerReminderQuery = "true",
+				requireReset = "false",
+				userEmailAddress = "userea2@liferay.com");
+
+			JSONAccountEntry.addAccountEntry(
+				accountEntryName = "Account Name1",
+				accountEntryType = "Business");
+
+			JSONAccountEntry.addAccountEntry(
+				accountEntryName = "Account Name2",
+				accountEntryType = "Business");
+
+			Accounts.openAccountsAdmin();
+
+			LexiconEntry.gotoEntry(rowEntry = "Account Name1");
+
+			Accounts.assignUsers(
+				accountName = "Account Name1",
+				assigneeName = "userfn2 userln2");
+
+			JSONRole.addAccountRole(
+				roleKey = "View and update Account Role",
+				roleTitle = "View and update Account Role");
+
+			Permissions.definePermissionViaJSONAPI(
+				resourceAction = "VIEW",
+				resourceName = "com.liferay.account.model.AccountEntry",
+				roleTitle = "View and update Account Role",
+				roleType = "account");
+
+			Permissions.definePermissionViaJSONAPI(
+				resourceAction = "UPDATE",
+				resourceName = "com.liferay.account.model.AccountEntry",
+				roleTitle = "View and update Account Role",
+				roleType = "account");
+
+			Permissions.definePermissionViaJSONAPI(
+				resourceAction = "MANAGE USERS",
+				resourceName = "com.liferay.account.model.AccountEntry",
+				roleTitle = "View and update Account Role",
+				roleType = "account");
+		}
+
+		task ("When assign the user to account1 login user assert and can edit account1") {
+			Accounts.openAccountsAdmin();
+
+			LexiconEntry.gotoEntry(rowEntry = "Account Name1");
+
+			Accounts.addAssigneeToRoleViaUsersTab(
+				accountRoleTitle = "View and update Account Role",
+				accountUserName = "userfn2 userln2");
+
+			User.logoutAndLoginPG(
+				userLoginEmailAddress = "userea2@liferay.com",
+				userLoginFullName = "userfn2 userln2");
+
+			Navigator.gotoPage(pageName = "2B Account Page");
+
+			LexiconEntry.viewEntryName(rowEntry = "Account Name1");
+
+			LexiconEntry.viewNoEntry(rowEntry = "Account Name2");
+
+			AssertElementPresent(
+				key_rowEntry = "Account Name1",
+				locator1 = "Icon#ROW_VERTICAL_ELLIPSIS");
+
+			task ("And move the user from account1 to account2") {
+				Accounts.openAccountsAdmin();
+
+				LexiconEntry.gotoEntry(rowEntry = "Account Name1");
+
+				Accounts.gotoAssigneeTab(assigneeTab = "Users");
+
+				Accounts.removeUserAsAssignee(assigneeName = "userfn2");
+
+				Accounts.openAccountsAdmin();
+
+				LexiconEntry.gotoEntry(rowEntry = "Account Name2");
+
+				Accounts.assignUsers(
+					accountName = "Account Name2",
+					assigneeName = "userfn2 userln2");
+
+				Accounts.openAccountsAdmin();
+
+				LexiconEntry.gotoEntry(rowEntry = "Account Name2");
+
+				Accounts.addAssigneeToRoleViaUsersTab(
+					accountRoleTitle = "View and update Account Role",
+					accountUserName = "userfn2 userln2");
+			}
+		}
+
+		task ("Then the accounts table should display both users holding both roles simultaneously") {
+			LexiconEntry.viewEntryName(rowEntry = "Account Name2");
+
+			LexiconEntry.viewNoEntry(rowEntry = "Account Name1");
+
+			AssertElementPresent(
+				key_rowEntry = "Account Name2",
+				locator1 = "Icon#ROW_VERTICAL_ELLIPSIS");
 		}
 	}
 
