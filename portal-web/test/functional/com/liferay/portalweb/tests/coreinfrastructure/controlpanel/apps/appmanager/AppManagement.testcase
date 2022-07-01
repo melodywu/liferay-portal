@@ -740,6 +740,7 @@ definition {
 	@description = "This test check search apps in marketplace store and check sign in and sign out."
 	@priority = "3"
 	test SearchMarketplaceStore {
+		property portal.acceptance = "melody";
 		property test.name.skip.portal.instance = "AppManagement#SearchMarketplaceStore";
 
 		task ("Given user login marketplace store assert user login in Purchased page") {
@@ -837,6 +838,7 @@ definition {
 	@description = "This test view purchased apps in marketplace purchased page."
 	@priority = "3"
 	test ViewPurchasedApp {
+		property portal.acceptance = "melody";
 		property test.name.skip.portal.instance = "AppManagement#ViewPurchasedApp";
 
 		task ("Given login marketplace store") {
