@@ -1530,6 +1530,8 @@ definition {
 	@description = "This test deactivates and activates multiple entries via management toolbar"
 	@priority = "4"
 	test CanDeactivateAndActivateAccountsInBulk {
+		property portal.acceptance = "melody";
+
 		for (var accountNumber : list "1,2,3,4,5,6") {
 			JSONAccountEntry.addAccountEntry(
 				accountEntryName = "Account ${accountNumber}",
