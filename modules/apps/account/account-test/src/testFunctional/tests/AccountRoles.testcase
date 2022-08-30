@@ -19,6 +19,89 @@ definition {
 		}
 	}
 
+	@description = "This is a use case for LPS-112885. This asserts Account Adiministrator can view users and user can assign roles, remove."
+	@priority = "4"
+	test AccountAdministratorCanViewUsers {
+		property custom.properties = "jsonws.web.service.paths.excludes=";
+
+		task ("Given add two users one of them is granted permissions to access Account Admin portlet") {
+			for (var userNum : list "1,2") {
+				JSONUser.addUser(
+					userEmailAddress = "userea${userNum}@liferay.com",
+					userFirstName = "userfn${userNum}",
+					userLastName = "userln${userNum}",
+					userScreenName = "usersn${userNum}");
+
+				JSONUser.setFirstPassword(
+					agreeToTermsAndAnswerReminderQuery = "true",
+					requireReset = "false",
+					userEmailAddress = "userea${userNum}@liferay.com");
+			}
+
+			Accounts.grantUserAccessToAccountAdmin(userEmailAddress = "userea1@liferay.com");
+		}
+
+		task ("And they are members of a business account") {
+			JSONAccountEntry.addAccountEntry(
+				accountEntryName = "Account Name",
+				accountEntryType = "Business");
+
+			for (var userNum : list "1,2") {
+				Accounts.openAccountsAdmin();
+
+				LexiconEntry.gotoEntry(rowEntry = "Account Name");
+
+				Accounts.assignUsers(
+					accountName = "Account Name",
+					assigneeName = "userfn${userNum}");
+			}
+		}
+
+		task ("When userfn1 is granted Account Administrator role of account") {
+			Accounts.openAccountsAdmin();
+
+			LexiconEntry.gotoEntry(rowEntry = "Account Name");
+
+			Accounts.addAssigneeToRoleViaUsersTab(
+				accountRoleTitle = "Account Administrator",
+				accountUserName = "userfn1 userln1");
+		}
+
+		task ("Then the account administrator can view two users in Account Name") {
+			User.logoutAndLoginPG(
+				userLoginEmailAddress = "userea1@liferay.com",
+				userLoginFullName = "userfn1 userln1");
+
+			Accounts.openAccountsAdmin();
+
+			LexiconEntry.gotoEntry(rowEntry = "Account Name");
+
+			Accounts.gotoAssigneeTab(assigneeTab = "Users");
+
+			for (var userNum : list "1,2") {
+				LexiconEntry.viewEntryName(rowEntry = "userea${userNum}@liferay.com");
+			}
+		}
+
+		task ("And he can manage the users in Account Name") {
+			for (var userNum : list "1,2") {
+				LexiconEntry.viewEntryMenuItem(
+					menuItem = "Assign Roles",
+					rowEntry = "userea${userNum}@liferay.com");
+
+				Accounts.openAccountsAdmin();
+
+				LexiconEntry.gotoEntry(rowEntry = "Account Name");
+
+				Accounts.gotoAssigneeTab(assigneeTab = "Users");
+
+				LexiconEntry.viewEntryMenuItem(
+					menuItem = "Remove",
+					rowEntry = "userea${userNum}@liferay.com");
+			}
+		}
+	}
+
 	@description = "This is a use case for LPS-142654. This asserts user with Add Account Role permissions for an account can add account roles."
 	@priority = "4"
 	test CanAddAccountRolesWithPermissions {
