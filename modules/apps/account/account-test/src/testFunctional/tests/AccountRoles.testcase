@@ -19,6 +19,57 @@ definition {
 		}
 	}
 
+	@description = "This is a use case for LPS-112885. This asserts Account member only can view its own Account."
+	@priority = "4"
+	test AccountMemberCanOnlyViewItsOwnAccount {
+		property custom.properties = "jsonws.web.service.paths.excludes=";
+
+		task ("Given a user is granted permissions to access Account Admin portlet") {
+			JSONUser.addUser(
+				userEmailAddress = "userea1@liferay.com",
+				userFirstName = "userfn1",
+				userLastName = "userln1",
+				userScreenName = "usersn1");
+
+			JSONUser.setFirstPassword(
+				agreeToTermsAndAnswerReminderQuery = "true",
+				requireReset = "false",
+				userEmailAddress = "userea1@liferay.com");
+
+			Accounts.grantUserAccessToAccountAdmin(userEmailAddress = "userea1@liferay.com");
+		}
+
+		task ("And add two business accounts") {
+			for (var accountNum : list "1,2") {
+				JSONAccountEntry.addAccountEntry(
+					accountEntryName = "Account Name ${accountNum}",
+					accountEntryType = "Business");
+			}
+		}
+
+		task ("When he is a member of only business account name1") {
+			Accounts.openAccountsAdmin();
+
+			LexiconEntry.gotoEntry(rowEntry = "Account Name 1");
+
+			Accounts.assignUsers(
+				accountName = "Account Name 1",
+				assigneeName = "userfn1");
+		}
+
+		task ("Then he can only view Account Name1 can not view Account Name2") {
+			User.logoutAndLoginPG(
+				userLoginEmailAddress = "userea1@liferay.com",
+				userLoginFullName = "userfn1 userln1");
+
+			Accounts.openAccountsAdmin();
+
+			LexiconEntry.viewEntryName(rowEntry = "Account Name 1");
+
+			LexiconEntry.viewNoEntryMenu(rowEntry = "Account Name 2");
+		}
+	}
+
 	@description = "This is a use case for LPS-142654. This asserts user with Add Account Role permissions for an account can add account roles."
 	@priority = "4"
 	test CanAddAccountRolesWithPermissions {
