@@ -968,7 +968,7 @@ definition {
 
 	@description = "This test deletes a staged and a live entry from an application, tests with Blogs entries."
 	@priority = "3"
-	test CanDeleteASingleStagedAndLiveBlogsEntry {
+	test CanDeleteASingleStagedAndLiveBlogsEntrys {
 		task ("Given Publish the staged blogs entries to live as a new admin user") {
 			JSONGroup.addGroup(groupName = "Site Name");
 
