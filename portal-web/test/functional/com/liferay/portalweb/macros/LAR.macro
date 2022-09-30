@@ -88,6 +88,8 @@ definition {
 		}
 
 		if ("${exportPermissions}" == "true") {
+			WaitForPageLoad();
+
 			Check(locator1 = "Checkbox#PERMISSIONS");
 		}
 
