@@ -352,7 +352,7 @@
 </tr>
 <tr>
 	<td>PERMISSIONS</td>
-	<td>//label[contains(.,'Permissions')]/input[contains(@id,'PERMISSIONS')]</td>
+	<td>//label[contains(.,'Permissions')]/input[contains(@id,'PERMISSIONS')] | //label/input[contains(@id,'PERMISSIONS')]</td>
 	<td></td>
 </tr>
 <tr>
