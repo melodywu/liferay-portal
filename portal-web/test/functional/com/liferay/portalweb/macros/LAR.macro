@@ -90,7 +90,9 @@ definition {
 		if ("${exportPermissions}" == "true") {
 			WaitForPageLoad();
 
-			Check(locator1 = "Checkbox#PERMISSIONS");
+			AssertElementPresent(locator1 = "Checkbox#PERMISSIONS");
+
+			Check.checkNotVisible(locator1 = "Checkbox#PERMISSIONS");
 		}
 
 		AssertClick(
