@@ -1342,10 +1342,6 @@ definition {
 				locator1 = "APConfigurationSites#SITES_TABLE_NAME",
 				value1 = "${liferaySiteName}");
 
-			AssertTextEquals(
-				locator1 = "APConfigurationSites#SITES_TABLE_TYPE",
-				value1 = "${liferaySiteType}");
-
 			AssertElementPresent(locator1 = "SitesSelectSite#SITES_TABLE_CHOOSE_SITE_LINK");
 		}
 		else if ("${contentSharingAcrossSitesEnabled}" == "false") {
