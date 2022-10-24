@@ -1186,6 +1186,8 @@ definition {
 
 	@priority = "4"
 	test ViewContentSharingDisabledAcrossSitesViaAP {
+		property portal.acceptance = "melody";
+
 		var siteName = TestCase.getSiteName(siteName = "${siteName}");
 
 		PortalSettings.gotoConfiguration(
@@ -1287,6 +1289,8 @@ definition {
 
 	@priority = "4"
 	test ViewContentSharingEnabledAcrossSitesViaAP {
+		property portal.acceptance = "melody";
+
 		var siteName = TestCase.getSiteName(siteName = "${siteName}");
 
 		PortalSettings.gotoConfiguration(
