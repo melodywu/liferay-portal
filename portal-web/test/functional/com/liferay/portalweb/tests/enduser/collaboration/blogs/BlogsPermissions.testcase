@@ -419,6 +419,8 @@ definition {
 	@priority = "4"
 	@refactorneeded
 	test CannotAddEntryWhenTeamRoleHasNoPermissions {
+		property portal.acceptance = "melody";
+
 		JSONGroup.addGroup(groupName = "Site Name");
 
 		JSONLayout.addPublicLayout(
@@ -969,6 +971,8 @@ definition {
 	@priority = "4"
 	@refactorneeded
 	test CannotDeleteEntryWhenTeamRoleHasNoPermissions {
+		property portal.acceptance = "melody";
+
 		JSONGroup.addGroup(groupName = "Site Name");
 
 		JSONLayout.addPublicLayout(
