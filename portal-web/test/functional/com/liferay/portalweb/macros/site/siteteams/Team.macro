@@ -182,7 +182,7 @@ definition {
 
 		PortletEntry.save();
 
-		AssertNotChecked(locator1 = "//tr[contains(.,'${teamName}')]/td//input[contains(@id,'${permissionDefinitionKey}')]");
+		AssertNotChecked.assertNotCheckedNotVisible(locator1 = "//tr[contains(.,'${teamName}')]/td//input[contains(@id,'${permissionDefinitionKey}')]");
 	}
 
 	macro searchCP {
