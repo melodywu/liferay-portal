@@ -178,11 +178,11 @@ definition {
 	}
 
 	macro removePermissionPG {
-		Uncheck(locator1 = "//tr[contains(.,'${teamName}')]/td/input[contains(@id,'${permissionDefinitionKey}')]");
+		Uncheck.uncheckNotVisible(locator1 = "//tr[contains(.,'${teamName}')]/td//input[contains(@id,'${permissionDefinitionKey}')]");
 
 		PortletEntry.save();
 
-		AssertNotChecked(locator1 = "//tr[contains(.,'${teamName}')]/td/input[contains(@id,'${permissionDefinitionKey}')]");
+		AssertNotChecked(locator1 = "//tr[contains(.,'${teamName}')]/td//input[contains(@id,'${permissionDefinitionKey}')]");
 	}
 
 	macro searchCP {
