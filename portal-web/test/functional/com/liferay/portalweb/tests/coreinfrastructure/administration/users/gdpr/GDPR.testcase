@@ -1150,7 +1150,7 @@ definition {
 		}
 
 		task ("Filter by name and assert that data exports are listed alphabetically") {
-			ManagementBar.toggleViewOrder(order = "list-down");
+			ManagementBar.toggleViewOrder(order = "list-up");
 
 			ManagementBar.setFilterAndOrder(orderBy = "Name");
 
@@ -2033,7 +2033,7 @@ definition {
 		task ("and entries in Export Personal Data are ordered by name in descending order") {
 			ManagementBar.setFilterAndOrder(orderBy = "Name");
 
-			ManagementBar.toggleViewOrder(order = "list-down");
+			ManagementBar.toggleViewOrder(order = "list-up");
 		}
 
 		task ("When pagination is changed, assert the correct number of entries are listed") {
