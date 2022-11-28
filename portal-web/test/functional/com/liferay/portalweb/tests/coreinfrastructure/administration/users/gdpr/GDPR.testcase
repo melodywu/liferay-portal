@@ -1093,6 +1093,8 @@ definition {
 	@description = "This test filters and orders data from the export data process"
 	@priority = "2"
 	test CanFilterAndOrderExportProcesses {
+		property portal.acceptance = "melody";
+
 		task ("Sign in as New User and create data from various applications") {
 			JSONBlog.addEntry(
 				entryContent = "Blogs Entry Content",
@@ -1959,6 +1961,8 @@ definition {
 	@description = "This test changes pagination and assert export processes display properly."
 	@priority = "2"
 	test PaginationWorksInExportPersonalData {
+		property portal.acceptance = "melody";
+
 		task ("Given there are data across several different applications") {
 			JSONBlog.addEntry(
 				entryContent = "Blogs Entry Content",
