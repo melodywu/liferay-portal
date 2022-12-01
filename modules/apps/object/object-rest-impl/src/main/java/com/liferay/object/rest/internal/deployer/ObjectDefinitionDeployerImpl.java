@@ -54,6 +54,7 @@ import com.liferay.portal.kernel.service.ResourceActionLocalService;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
 import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -172,17 +173,16 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 			}
 		}
 
-		List<String> companyIds = _restContextPathCompanyIds.get(
-			restContextPath);
+		List<String> companyIds = _basePathCompanyIds.get(restContextPath);
 
 		if (companyIds != null) {
 			companyIds.remove(String.valueOf(objectDefinition.getCompanyId()));
 
 			if (!companyIds.isEmpty()) {
-				ServiceRegistration<?> serviceRegistration =
+				ServiceRegistration<?> serviceRegistration1 =
 					_applicationServiceRegistrations.get(restContextPath);
 
-				serviceRegistration.setProperties(
+				serviceRegistration1.setProperties(
 					_applicationProperties.get(restContextPath));
 
 				return;
@@ -287,14 +287,14 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 
 		String restContextPath = objectDefinition.getRESTContextPath();
 
-		List<String> companyIds = _restContextPathCompanyIds.computeIfAbsent(
+		List<String> companyIds = _basePathCompanyIds.computeIfAbsent(
 			restContextPath, key -> new ArrayList<>());
 
 		companyIds.add(String.valueOf(objectDefinition.getCompanyId()));
 
 		String osgiJaxRsName = objectDefinition.getOSGiJaxRsName();
 
-		Dictionary<String, Object> properties =
+		HashMapDictionary<String, Object> properties =
 			HashMapDictionaryBuilder.<String, Object>put(
 				"companyId", companyIds
 			).put(
@@ -534,6 +534,8 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 		_applicationProperties = new HashMap<>();
 	private final Map<String, ServiceRegistration<Application>>
 		_applicationServiceRegistrations = new HashMap<>();
+	private final Map<String, List<String>> _basePathCompanyIds =
+		new HashMap<>();
 	private BundleContext _bundleContext;
 
 	@Reference
@@ -608,9 +610,6 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 
 	@Reference
 	private ResourcePermissionLocalService _resourcePermissionLocalService;
-
-	private final Map<String, List<String>> _restContextPathCompanyIds =
-		new HashMap<>();
 
 	@Reference
 	private RoleLocalService _roleLocalService;
