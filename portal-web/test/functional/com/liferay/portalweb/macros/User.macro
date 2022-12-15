@@ -1354,6 +1354,57 @@ definition {
 		PortletEntry.save();
 	}
 
+	macro editBasicUserInformation {
+		AssertElementPresent.assertElementPresent(locator1 = "TextInput#FIRST_NAME");
+
+		if (isSet(userFirstNameEdit)) {
+			Type(
+				locator1 = "TextInput#FIRST_NAME",
+				value1 = "${userFirstNameEdit}");
+		}
+
+		if (isSet(userLastNameEdit)) {
+			Type(
+				locator1 = "TextInput#LAST_NAME",
+				value1 = "${userLastNameEdit}");
+		}
+
+		if (isSet(userMiddleNameEdit)) {
+			Type(
+				locator1 = "TextInput#MIDDLE_NAME",
+				value1 = "${userMiddleNameEdit}");
+		}
+
+		if (isSet(userCustomField)) {
+			Type(
+				key_fieldLabel = "${userCustomFieldLabel}",
+				locator1 = "TextInput#GENERIC_TEXT_INPUT",
+				value1 = "${userCustomField}");
+		}
+
+		PortletEntry.save();
+
+		if (isSet(userScreenNameEdit)) {
+			Type(
+				locator1 = "TextInput#SCREEN_NAME",
+				value1 = "${userScreenNameEdit}");
+
+			Button.clickSave();
+
+			User.confirmPassword(password = "${password}");
+		}
+
+		if (isSet(userEmailAddressEdit)) {
+			Type(
+				locator1 = "TextInput#EMAIL_ADDRESS",
+				value1 = "${userEmailAddressEdit}");
+
+			Button.clickSave();
+
+			User.confirmPassword(password = "${password}");
+		}
+	}
+
 	macro editCustomFieldInformation {
 		UserNavigator.gotoUser(userScreenName = "${userScreenName}");
 
@@ -1653,57 +1704,6 @@ definition {
 			value1 = "${userGender}");
 
 		PortletEntry.save();
-	}
-
-	macro editUserInformation {
-		AssertElementPresent.assertElementPresent(locator1 = "TextInput#FIRST_NAME");
-
-		if (isSet(userFirstNameEdit)) {
-			Type(
-				locator1 = "TextInput#FIRST_NAME",
-				value1 = "${userFirstNameEdit}");
-		}
-
-		if (isSet(userLastNameEdit)) {
-			Type(
-				locator1 = "TextInput#LAST_NAME",
-				value1 = "${userLastNameEdit}");
-		}
-
-		if (isSet(userMiddleNameEdit)) {
-			Type(
-				locator1 = "TextInput#MIDDLE_NAME",
-				value1 = "${userMiddleNameEdit}");
-		}
-
-		if (isSet(userCustomField)) {
-			Type(
-				key_fieldLabel = "${userCustomFieldLabel}",
-				locator1 = "TextInput#GENERIC_TEXT_INPUT",
-				value1 = "${userCustomField}");
-		}
-
-		PortletEntry.save();
-
-		if (isSet(userScreenNameEdit)) {
-			Type(
-				locator1 = "TextInput#SCREEN_NAME",
-				value1 = "${userScreenNameEdit}");
-
-			Button.clickSave();
-
-			User.confirmPassword(password = "${password}");
-		}
-
-		if (isSet(userEmailAddressEdit)) {
-			Type(
-				locator1 = "TextInput#EMAIL_ADDRESS",
-				value1 = "${userEmailAddressEdit}");
-
-			Button.clickSave();
-
-			User.confirmPassword(password = "${password}");
-		}
 	}
 
 	macro editUserJobTitleCP {
