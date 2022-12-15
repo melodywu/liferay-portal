@@ -279,7 +279,7 @@ definition {
 
 		Navigator.gotoAccountSettings();
 
-		User.editUserInformation(
+		User.editBasicUserInformation(
 			userEmailAddressEdit = "testadmin@liferay.com",
 			userScreenNameEdit = "testscreen");
 

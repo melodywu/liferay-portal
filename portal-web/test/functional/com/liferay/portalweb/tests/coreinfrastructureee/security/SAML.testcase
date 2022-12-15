@@ -665,7 +665,7 @@ definition {
 		task ("Edit user information") {
 			MyAccount.openMyAccountAdmin();
 
-			User.editUserInformation(userFirstNameEdit = "Testedit");
+			User.editBasicUserInformation(userFirstNameEdit = "Testedit");
 		}
 
 		task ("View CP information") {
@@ -1060,7 +1060,7 @@ definition {
 		task ("Edit user screen name") {
 			MyAccount.openMyAccountAdmin();
 
-			User.editUserInformation(userScreenNameEdit = "tester");
+			User.editBasicUserInformation(userScreenNameEdit = "tester");
 		}
 
 		task ("Add virtual instance able.com") {
@@ -2676,7 +2676,7 @@ definition {
 
 			UserNavigator.gotoUser(userScreenName = "usera");
 
-			User.editUserInformation(
+			User.editBasicUserInformation(
 				userCustomField = "textChanged",
 				userCustomFieldLabel = "inputfield");
 
@@ -3957,7 +3957,7 @@ definition {
 		task ("Edit user screen name to localhost") {
 			MyAccount.openMyAccountAdmin();
 
-			User.editUserInformation(userScreenNameEdit = "localhost");
+			User.editBasicUserInformation(userScreenNameEdit = "localhost");
 		}
 
 		task ("Logout and login at able.com") {

@@ -2341,7 +2341,7 @@ definition {
 			locator1 = "Portlet#HEADER",
 			value1 = "Edit User");
 
-		User.editUserInformation(
+		User.editBasicUserInformation(
 			userEmailAddressEdit = "testadmin@liferay.com",
 			userScreenNameEdit = "testscreen");
 

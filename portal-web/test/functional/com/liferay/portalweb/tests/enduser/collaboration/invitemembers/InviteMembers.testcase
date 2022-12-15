@@ -117,7 +117,7 @@ definition {
 
 		UserNavigator.gotoUser(userScreenName = "usersn");
 
-		User.editUserInformation(userLastNameEdit = '''userln<script>alert('hello!')</script>''');
+		User.editBasicUserInformation(userLastNameEdit = '''userln<script>alert('hello!')</script>''');
 
 		Navigator.gotoPage(pageName = "Test Page");
 

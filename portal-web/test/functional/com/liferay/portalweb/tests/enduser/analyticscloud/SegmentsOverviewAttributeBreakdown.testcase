@@ -242,7 +242,7 @@ definition {
 
 			UserNavigator.gotoUser(userScreenName = "user1");
 
-			User.editUserInformation(
+			User.editBasicUserInformation(
 				userCustomField = "50",
 				userCustomFieldLabel = "Age");
 		}

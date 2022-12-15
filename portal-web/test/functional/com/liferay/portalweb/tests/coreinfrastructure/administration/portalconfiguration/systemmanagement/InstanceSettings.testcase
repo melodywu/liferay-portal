@@ -95,7 +95,7 @@ definition {
 
 		Navigator.gotoAccountSettings();
 
-		User.editUserInformation(userEmailAddressEdit = "edit@liferay.com");
+		User.editBasicUserInformation(userEmailAddressEdit = "edit@liferay.com");
 
 		MockMock.openBodyLink(
 			asset = "${portalURL}: Email Address Verification",

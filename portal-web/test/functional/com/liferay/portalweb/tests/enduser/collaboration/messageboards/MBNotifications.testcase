@@ -199,7 +199,7 @@ definition {
 
 		UserNavigator.gotoUser(userScreenName = "test");
 
-		User.editUserInformation(userEmailAddressEdit = "testadmin@liferay.com");
+		User.editBasicUserInformation(userEmailAddressEdit = "testadmin@liferay.com");
 
 		Navigator.gotoPage(pageName = "Message Boards Page");
 
@@ -492,7 +492,7 @@ definition {
 
 		Navigator.gotoAccountSettings();
 
-		User.editUserInformation(userEmailAddressEdit = PropsUtil.get("email.address.4"));
+		User.editBasicUserInformation(userEmailAddressEdit = PropsUtil.get("email.address.4"));
 
 		MessageboardsPortlet.configureMessageEmailFromCP(emailFromAddress = PropsUtil.get("email.address.2"));
 

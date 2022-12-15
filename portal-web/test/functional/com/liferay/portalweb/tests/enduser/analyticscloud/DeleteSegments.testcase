@@ -403,7 +403,7 @@ definition {
 
 			UserNavigator.gotoUser(userScreenName = "ac");
 
-			User.editUserInformation(
+			User.editBasicUserInformation(
 				userCustomField = "reading",
 				userCustomFieldLabel = "Hobby");
 		}
@@ -420,7 +420,7 @@ definition {
 
 			UserNavigator.gotoUser(userScreenName = "ac");
 
-			User.editUserInformation(
+			User.editBasicUserInformation(
 				userCustomField = "writing",
 				userCustomFieldLabel = "Hobby");
 		}

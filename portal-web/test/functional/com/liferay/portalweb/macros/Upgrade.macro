@@ -3863,7 +3863,7 @@ definition {
 
 		User.deleteProfileImage();
 
-		User.editUserInformation(
+		User.editBasicUserInformation(
 			userFirstNameEdit = "userfn1",
 			userLastNameEdit = "userln1",
 			userScreenNameEdit = "usersn1");

@@ -505,7 +505,7 @@ definition {
 
 			UserNavigator.gotoUser(userScreenName = "ac");
 
-			User.editUserInformation(
+			User.editBasicUserInformation(
 				userCustomField = "VIP",
 				userCustomFieldLabel = "User Custom Field");
 		}
@@ -522,7 +522,7 @@ definition {
 
 			UserNavigator.gotoUser(userScreenName = "ac");
 
-			User.editUserInformation(
+			User.editBasicUserInformation(
 				userCustomField = "VIP AC",
 				userCustomFieldLabel = "User Custom Field");
 		}

@@ -452,7 +452,7 @@ definition {
 
 		UserBar.gotoDropdownItem(dropdownItem = "Account Settings");
 
-		User.editUserInformation(userLastNameEdit = '''Test<script>alert('hello!')</script>''');
+		User.editBasicUserInformation(userLastNameEdit = '''Test<script>alert('hello!')</script>''');
 
 		AnnouncementsNavigator.openToEntriesTab(
 			layoutName = "announcements-page",

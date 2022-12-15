@@ -571,7 +571,7 @@ definition {
 
 			UserBar.gotoDropdownItem(dropdownItem = "Account Settings");
 
-			User.editUserInformation(
+			User.editBasicUserInformation(
 				userFirstNameEdit = '''<script>alert(123);</script>''',
 				userLastNameEdit = '''<script>alert(123);</script>''',
 				userMiddleNameEdit = '''<script>alert(123);</script>''');

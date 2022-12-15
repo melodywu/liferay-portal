@@ -175,7 +175,7 @@ definition {
 
 		UserNavigator.gotoUser(userScreenName = "test1");
 
-		User.editUserInformation(userMiddleNameEdit = "test1");
+		User.editBasicUserInformation(userMiddleNameEdit = "test1");
 
 		ApplicationsMenu.gotoPortlet(
 			category = "Security",

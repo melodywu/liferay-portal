@@ -312,7 +312,7 @@ definition {
 	test XSSCannotBeExecutedFromTheOwnerNameInTheInfoPanel {
 		Navigator.gotoAccountSettings();
 
-		User.editUserInformation(userMiddleNameEdit = '''<svg/onload=alert(1)>''');
+		User.editBasicUserInformation(userMiddleNameEdit = '''<svg/onload=alert(1)>''');
 
 		JSONDocument.addFileWithUploadedFile(
 			dmDocumentDescription = "DM Document Description",

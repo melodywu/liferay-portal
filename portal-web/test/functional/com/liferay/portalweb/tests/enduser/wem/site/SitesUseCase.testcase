@@ -672,7 +672,7 @@ definition {
 		task ("Edit user email address for email notification") {
 			Navigator.gotoAccountSettings();
 
-			User.editUserInformation(userEmailAddressEdit = "user2@liferay.com");
+			User.editBasicUserInformation(userEmailAddressEdit = "user2@liferay.com");
 		}
 
 		task ("Get Email Address Verification URL from email") {

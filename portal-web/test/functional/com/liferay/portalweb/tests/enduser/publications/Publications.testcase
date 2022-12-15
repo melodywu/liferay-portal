@@ -901,7 +901,7 @@ definition {
 
 		Navigator.gotoAccountSettings();
 
-		User.editUserInformation(userScreenNameEdit = "testscreen");
+		User.editBasicUserInformation(userScreenNameEdit = "testscreen");
 
 		User.viewUserInfomation(
 			userEmailAddress = "test@liferay.com",

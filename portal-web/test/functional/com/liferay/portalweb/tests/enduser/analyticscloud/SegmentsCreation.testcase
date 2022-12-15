@@ -1012,7 +1012,7 @@ definition {
 
 				UserNavigator.gotoUser(userScreenName = "${userName}");
 
-				User.editUserInformation(
+				User.editBasicUserInformation(
 					userCustomField = "50",
 					userCustomFieldLabel = "Age");
 			}

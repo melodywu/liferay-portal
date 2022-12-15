@@ -209,7 +209,7 @@ definition {
 
 		MenuItem.click(menuItem = "Edit");
 
-		User.editUserInformation(
+		User.editBasicUserInformation(
 			userFirstNameEdit = "Updateln",
 			userLastNameEdit = "Updateln");
 
