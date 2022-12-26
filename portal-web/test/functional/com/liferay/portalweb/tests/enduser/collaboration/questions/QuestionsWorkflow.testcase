@@ -41,6 +41,7 @@ definition {
 	@description = "Validate if a user can answer a question that was posted before the workflow was enabled."
 	@priority = "4"
 	test CanAddAnswerViaJSONAfterEnablingWorkflow {
+		property portal.acceptance = "melody";
 		property test.name.skip.portal.instance = "QuestionsWorkflow#CanAddAnswerViaJSONAfterEnablingWorkflow";
 
 		JSONMBMessage.addCategory(
@@ -148,9 +149,9 @@ definition {
 
 		Questions.openToConfigInSystemSettings(portlet = "Questions");
 
-		SystemSettings.editTextAreaSetting(
-			settingName = "Set Base Path for History Router",
-			settingValue = "/questions-page");
+		FormFields.editTextArea(
+			fieldName = "Set Base Path for History Router",
+			fieldValue = "/questions-page");
 
 		SystemSettings.saveConfiguration();
 

@@ -2728,6 +2728,7 @@ definition {
 	@priority = "4"
 	test CanRemoveDomainFromBlacklist {
 		AccountConfiguration.addBlockedEmailDomain(settingValues = "yahoo.com,blocked.com,google.com");
+		property portal.acceptance = "melody";
 
 		for (var settingValue : list "yahoo.com,blocked.com,google.com") {
 			SystemSettings.viewTextareaPartialText(

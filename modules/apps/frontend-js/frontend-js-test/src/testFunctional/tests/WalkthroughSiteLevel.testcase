@@ -69,6 +69,7 @@ definition {
 	@description = "LPS-159844. When a walkthrough step is defined and a step is below the fold, user can see popover is."
 	@priority = "3"
 	test CanRenderWhenStepIsBelowFold {
+		property portal.acceptance = "melody";
 		property portal.acceptance = "true";
 
 		task ("Given walkthrough enabled site-level") {

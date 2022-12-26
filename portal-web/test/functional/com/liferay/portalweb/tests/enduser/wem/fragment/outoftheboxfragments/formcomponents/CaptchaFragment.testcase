@@ -233,6 +233,7 @@ definition {
 	@description = "This is a test for LPS-155168. The user could submit Verification of reCaptcha at view mode."
 	@priority = "5"
 	test SubmitVerificationOfReCaptcha {
+		property portal.acceptance = "melody";
 		property portal.acceptance = "true";
 		property test.name.skip.portal.instance = "CaptchaFragment#SubmitVerificationOfReCaptcha";
 

@@ -1065,6 +1065,7 @@ definition {
 	@description = "LPS-130266: Validate if it's posible to create a experience using a segment based on Organization > Type criteria"
 	@priority = "5"
 	test AddNewExperienceOrganizationTypeSegment {
+		property portal.acceptance = "melody";
 		property portal.acceptance = "true";
 		property test.name.skip.portal.instance = "ExperienceCreateExperience#AddNewExperienceOrganizationTypeSegment";
 

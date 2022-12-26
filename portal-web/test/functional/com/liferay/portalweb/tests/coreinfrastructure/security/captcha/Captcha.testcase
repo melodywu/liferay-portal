@@ -42,6 +42,7 @@ definition {
 		property captcha.enabled = "true";
 		property osgi.module.configuration.file.names = "com.liferay.captcha.configuration.CaptchaConfiguration.config";
 		property osgi.module.configurations = "maxChallenges=\"0\"";
+		property portal.acceptance = "melody";
 		property portal.acceptance = "true";
 		property test.name.skip.portal.instance = "Captcha#ViewRecaptchaEnabled";
 
