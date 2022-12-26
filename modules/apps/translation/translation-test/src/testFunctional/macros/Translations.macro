@@ -423,9 +423,9 @@ definition {
 			key_settingFieldName = "Enabled",
 			locator1 = "SystemSettings#SETTING_FIELD_NAME_CHECKBOX");
 
-		SystemSettings.editTextAreaSetting(
-			settingName = "Service Account Private Key",
-			settingValue = "${settingValue}");
+		FormFields.editTextArea(
+			fieldName = "Service Account Private Key",
+			fieldValue = "${settingValue}");
 
 		Button.clickSave();
 

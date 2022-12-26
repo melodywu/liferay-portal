@@ -706,15 +706,15 @@ definition {
 
 		Questions.openToConfigInSystemSettings(portlet = "Questions");
 
-		SystemSettings.editTextAreaSetting(
-			settingName = "Set Base Path for History Router",
-			settingValue = "/questions-page");
+		FormFields.editTextArea(
+			fieldName = "Set Base Path for History Router",
+			fieldValue = "/questions-page");
 
 		SystemSettings.saveConfiguration();
 
-		SystemSettings.editTextAreaSetting(
-			settingName = "Set Base Path for History Router",
-			settingValue = " ");
+		FormFields.editTextArea(
+			fieldName = "Set Base Path for History Router",
+			fieldValue = " ");
 
 		SystemSettings.saveConfiguration();
 
@@ -1045,9 +1045,9 @@ definition {
 
 		Questions.openToConfigInSystemSettings(portlet = "Questions");
 
-		SystemSettings.editTextAreaSetting(
-			settingName = "Set Base Path for History Router",
-			settingValue = "/questions-page");
+		FormFields.editTextArea(
+			fieldName = "Set Base Path for History Router",
+			fieldValue = "/questions-page");
 
 		SystemSettings.saveConfiguration();
 
@@ -1079,9 +1079,9 @@ definition {
 
 		Questions.openToConfigInSystemSettings(portlet = "Questions");
 
-		SystemSettings.editTextAreaSetting(
-			settingName = "Set Base Path for History Router",
-			settingValue = "/questions-page");
+		FormFields.editTextArea(
+			fieldName = "Set Base Path for History Router",
+			fieldValue = "/questions-page");
 
 		SystemSettings.saveConfiguration();
 
@@ -1145,9 +1145,9 @@ definition {
 
 		Questions.openToConfigInSystemSettings(portlet = "Questions");
 
-		SystemSettings.editTextAreaSetting(
-			settingName = "Set Base Path for History Router",
-			settingValue = "/questions-page");
+		FormFields.editTextArea(
+			fieldName = "Set Base Path for History Router",
+			fieldValue = "/questions-page");
 
 		SystemSettings.saveConfiguration();
 
@@ -1931,9 +1931,9 @@ definition {
 
 		Questions.openToConfigInSystemSettings(portlet = "Questions");
 
-		SystemSettings.editTextAreaSetting(
-			settingName = "Set Base Path for History Router",
-			settingValue = "/questions-page");
+		FormFields.editTextArea(
+			fieldName = "Set Base Path for History Router",
+			fieldValue = "/questions-page");
 
 		SystemSettings.saveConfiguration();
 

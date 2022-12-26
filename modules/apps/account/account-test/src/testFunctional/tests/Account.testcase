@@ -2735,9 +2735,9 @@ definition {
 				settingValue = "${settingValue}");
 		}
 
-		SystemSettings.editTextAreaSetting(
-			settingName = "Blocked Email Domains",
-			settingValue = "blocked.com");
+		FormFields.editTextArea(
+			fieldName = "Blocked Email Domains",
+			fieldValue = "blocked.com");
 
 		SystemSettings.saveConfiguration();
 

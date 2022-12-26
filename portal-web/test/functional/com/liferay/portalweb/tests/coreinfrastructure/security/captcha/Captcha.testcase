@@ -64,15 +64,15 @@ definition {
 		}
 
 		task ("Edit reCAPTCHA private key") {
-			SystemSettings.editTextAreaSetting(
-				settingName = "reCAPTCHA Private Key",
-				settingValue = "${recaptchaPrivateKey}");
+			FormFields.editTextArea(
+				fieldName = "reCAPTCHA Private Key",
+				fieldValue = "${recaptchaPrivateKey}");
 		}
 
 		task ("Edit reCAPTCHA public key and save configuration") {
-			SystemSettings.editTextAreaSetting(
-				settingName = "reCAPTCHA Public Key",
-				settingValue = "${recaptchaPublicKey}");
+			FormFields.editTextArea(
+				fieldName = "reCAPTCHA Public Key",
+				fieldValue = "${recaptchaPublicKey}");
 
 			SystemSettings.saveConfiguration();
 		}

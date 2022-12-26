@@ -3,9 +3,9 @@ definition {
 	macro _editWalkthroughJSON {
 		var jsonSnippet = Walkthrough.getWalkthroughSteps(fileName = "${fileName}");
 
-		SystemSettings.editTextAreaSetting(
-			settingName = "Steps",
-			settingValue = "${jsonSnippet}");
+		FormFields.editTextArea(
+			fieldName = "Steps",
+			fieldValue = "${jsonSnippet}");
 	}
 
 	macro _enableWalkthrough {

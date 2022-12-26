@@ -1482,9 +1482,9 @@ definition {
 		Button.clickAdd();
 
 		for (var settingName : list "Name,Children Types") {
-			SystemSettings.editTextAreaSetting(
-				settingName = "${settingName}",
-				settingValue = "Location");
+			FormFields.editTextArea(
+				fieldName = "${settingName}",
+				fieldValue = "Location");
 		}
 
 		for (var fieldName : list "countryEnabled,rootable") {

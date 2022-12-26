@@ -55,9 +55,9 @@ definition {
 			Check.toggleSwitch(locator1 = "SystemSettings#SETTING_FIELD_NAME_CHECKBOX");
 
 			if (isSet(settingValue)) {
-				SystemSettings.editTextAreaSetting(
-					settingName = "${settingName}",
-					settingValue = "${settingValue}");
+				FormFields.editTextArea(
+					fieldName = "${settingName}",
+					fieldValue = "${settingValue}");
 			}
 
 			SystemSettings.saveConfiguration();

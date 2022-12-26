@@ -261,13 +261,13 @@ definition {
 					fieldName = "CAPTCHA Engine",
 					selectOption = "reCAPTCHA");
 
-				SystemSettings.editTextAreaSetting(
-					settingName = "reCAPTCHA Public Key",
-					settingValue = PropsUtil.get("recaptcha.public.key"));
+				FormFields.editTextArea(
+					fieldName = "reCAPTCHA Public Key",
+					fieldValue = PropsUtil.get("recaptcha.public.key"));
 
-				SystemSettings.editTextAreaSetting(
-					settingName = "reCAPTCHA Private Key",
-					settingValue = PropsUtil.get("recaptcha.private.key"));
+				FormFields.editTextArea(
+					fieldName = "reCAPTCHA Private Key",
+					fieldValue = PropsUtil.get("recaptcha.private.key"));
 
 				SystemSettings.saveConfiguration();
 			}
