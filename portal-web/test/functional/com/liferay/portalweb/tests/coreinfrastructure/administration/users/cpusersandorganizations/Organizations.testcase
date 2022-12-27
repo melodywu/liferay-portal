@@ -639,7 +639,7 @@ definition {
 		task ("When a user is added to that organization through the UI") {
 			Organization.openOrganizationsAdmin();
 
-			Organization.addUser(
+			User.addUserInformation(
 				organizationName = "Organization Name",
 				userEmailAddress = "userea@liferay.com",
 				userFirstName = "userfn",
@@ -674,7 +674,7 @@ definition {
 
 			Organization.openOrganizationsAdmin();
 
-			Organization.addUser(
+			User.addUserInformation(
 				organizationName = "Organization Name",
 				userEmailAddress = "postmaster@liferay.com",
 				userFirstName = "userfn",
