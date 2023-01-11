@@ -1481,6 +1481,8 @@ definition {
 			userEmailAddress = "${userEmailAddress}",
 			userScreenName = "${userScreenName}");
 
+		AssertElementPresent(locator1 = "UserBar#USER_AVATAR_IMAGE");
+
 		User.logoutPG();
 
 		if ("${samlEnabled}" == "true") {
