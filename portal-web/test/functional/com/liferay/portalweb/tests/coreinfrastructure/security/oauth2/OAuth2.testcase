@@ -555,6 +555,8 @@ definition {
 	@description = "This is a use case for OAUTH2-216. Authorization prompt should not include the application name when authorizing and no scopes should be stored from the application in the authorization request page."
 	test AuthPromptInRequestScopeShouldNotBeVisible {
 		property custom.properties = "virtual.hosts.default.site.name=Guest";
+		property environment.acceptance = "true";
+		property operating.system.types = "alpine,amazonlinux,centos,debian,fedora,orcllinux,osx,redhat,solaris,suse,ubuntu,windows";
 		property osgi.module.configuration.file.names = "com.liferay.oauth2.provider.scope.internal.configuration.BundlePrefixHandlerFactoryConfiguration~default.config";
 		property osgi.module.configurations = "include.bundle.symbolic.name=\"false\"${line.separator}osgi.jaxrs.name=\"Default\"${line.separator}separator=\"\"${line.separator}service.properties=\"\"";
 		property test.name.skip.portal.instance = "OAuth2#AuthPromptInRequestScopeShouldNotBeVisible";
@@ -794,6 +796,8 @@ definition {
 
 	@description = "This is a use case for LRQA-48777. User can edit external applications to enable or disable permissions in both scopes."
 	test EditApplicationScopesAndViewLanguageKeys {
+		property environment.acceptance = "true";
+		property operating.system.types = "alpine,amazonlinux,centos,debian,fedora,orcllinux,osx,redhat,solaris,suse,ubuntu,windows";
 		property osgi.module.configuration.file.names = "com.liferay.oauth2.provider.scope.internal.configuration.ConfigurableScopeMapperConfiguration~default.config";
 		property osgi.module.configurations = "mapping=[\"example-scope-1,example-scope-2\=everything\"]${line.separator}osgi.jaxrs.name=\"liferay-oauth2-scope-sample-qa-app\"${line.separator}passthrough=\"true\"";
 		property test.name.skip.portal.instance = "OAuth2#EditApplicationScopesAndViewLanguageKeys";
@@ -1706,6 +1710,8 @@ definition {
 	@description = "This is a use case for LPS-110393. Verify that panels under global scopes can be expanded."
 	@priority = "4"
 	test PanelsShouldBeExpandableOnGlobalScopes {
+		property environment.acceptance = "true";
+		property operating.system.types = "alpine,amazonlinux,centos,debian,fedora,orcllinux,osx,redhat,solaris,suse,ubuntu,windows";
 		property test.name.skip.portal.instance = "OAuth2#PanelsShouldBeExpandableOnGlobalScopes";
 
 		task ("Delete OSGi JAX-RS Default configuration") {
@@ -1934,6 +1940,8 @@ definition {
 
 	@description = "This is a use case for LRQA-48773. User can update scope bundle prefixes."
 	test ScopeBundlePrefixesCanBeUpdated {
+		property environment.acceptance = "true";
+		property operating.system.types = "alpine,amazonlinux,centos,debian,fedora,orcllinux,osx,redhat,solaris,suse,ubuntu,windows";
 		property test.name.skip.portal.instance = "OAuth2#ScopeBundlePrefixesCanBeUpdated";
 
 		FileInstall.deployFileOnServer(jarFile = "com.liferay.oauth2.provider.scope.sample.qa.jar");
@@ -1999,6 +2007,8 @@ definition {
 
 	@description = "This is a use case for LRQA-40999. User can add and remove configurations in the scope mappings."
 	test ScopeMappingsCanBeUpdated {
+		property environment.acceptance = "true";
+		property operating.system.types = "alpine,amazonlinux,centos,debian,fedora,orcllinux,osx,redhat,solaris,suse,ubuntu,windows";
 		property osgi.module.configuration.file.names = "com.liferay.oauth2.provider.scope.internal.configuration.ConfigurableScopeMapperConfiguration~liferay~oauth2~scope~sample~qa~app.config";
 		property osgi.module.configurations = "mapping=[\"example-scope-1,example-scope-2\=everything.read,everything.write\"]${line.separator}osgi.jaxrs.name=\"liferay-oauth2-scope-sample-qa-app\"${line.separator}passthrough=\"false\"";
 		property test.name.skip.portal.instance = "OAuth2#ScopeMappingsCanBeUpdated";
