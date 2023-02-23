@@ -247,43 +247,31 @@ definition {
 	test VerifyInstanceCookieSettingDontOverwiteSiteLevelWhenBothActive {
 		property test.name.skip.portal.instance = "CookiesSiteLevelUseCase#VerifyInstanceCookieSettingDontOverwiteSiteLevelWhenBothActive";
 
-		task ("Given: Site Administrator enabled the cookie preference handling in site level and the explicit cookie consent mode.") {
-			for (var count : list "1,2") {
-				JSONUser.addUser(
-					userEmailAddress = "userea${count}@liferay.com",
-					userFirstName = "userfn${count}",
-					userLastName = "userln${count}",
-					userScreenName = "usersn${count}");
+		task ("Given: Enabled the cookie preference handling with explicit mode in site and instance level.") {
+			// JSONUser.addUser(
+			// 	userEmailAddress = "userea@liferay.com",
+			// 	userFirstName = "userfn",
+			// 	userLastName = "userln",
+			// 	userScreenName = "usersn");
 
-				JSONUser.setFirstPassword(
-					agreeToTermsAndAnswerReminderQuery = "true",
-					requireReset = "false",
-					userEmailAddress = "userea${count}@liferay.com");
+			// JSONUser.setFirstPassword(
+			// 	agreeToTermsAndAnswerReminderQuery = "true",
+			// 	requireReset = "false",
+			// 	userEmailAddress = "userea@liferay.com");
 
-				JSONUser.addUserToSite(
-					groupName = "Guest",
-					userEmailAddress = "userea${count}@liferay.com");
-			}
+			// JSONUser.addUserToSite(
+			// 	groupName = "Guest",
+			// 	userEmailAddress = "userea@liferay.com");
 
-			JSONUser.addUser(
-				userEmailAddress = "userea@liferay.com",
-				userFirstName = "userfn",
-				userLastName = "userln",
-				userScreenName = "usersn");
+			CookiePreferenceHandlingAdmin.enablePreferenceHandlingWithCookieConsentInSiteSettings(
+				baseURL = "http://localhost:8080",
+				portlet = "Preference Handling",
+				siteURLKey = "guest");
 
-			JSONUser.setFirstPassword(
-				agreeToTermsAndAnswerReminderQuery = "true",
-				requireReset = "false",
-				userEmailAddress = "userea@liferay.com");
-
-			JSONUser.addUserToSite(
-				groupName = "Guest",
-				userEmailAddress = "userea@liferay.com");
-
-			JSONRole.assignSiteRoleToUser(
-				groupName = "Guest",
-				roleTitle = "Site Administrator",
-				userEmailAddress = "userea1@liferay.com");
+			CookieBannerAdmin.setCustomTextForAllFieldsAtSiteLevel(
+				baseURL = "http://localhost:8080",
+				siteURLKey = "guest",
+				text = "SITE_LEVEL");
 
 			Site.openSiteSettingsAdmin(siteURLKey = "guest");
 
@@ -291,17 +279,14 @@ definition {
 				pageVirtualHosts = "true",
 				pageVirtualHostURL = "www.able.com");
 
-			UserBar.signOut();
-
-			User.firstLoginUI(
-				password = "test",
-				specificURL = "http://www.able.com:8080",
-				userEmailAddress = "userea1@liferay.com");
-
 			CookiePreferenceHandlingAdmin.enablePreferenceHandlingWithCookieConsentInSiteSettings(
-				baseURL = "http://www.able.com:8080",
+				baseURL = "http://localhost:8080",
 				portlet = "Preference Handling",
 				siteURLKey = "guest");
+
+			CookiePreferenceHandlingAdmin.enablePreferenceHandlingWithCookieConsent();
+
+			CookieBannerAdmin.setCustomTextForAllFields(text = "INSTANCE_LEVEL");
 		}
 
 		task ("When: End User first visits the site") {
@@ -310,17 +295,40 @@ definition {
 			User.firstLoginUI(
 				password = "test",
 				specificURL = "http://www.able.com:8080",
-				userEmailAddress = "userea2@liferay.com");
+				userEmailAddress = "userea@liferay.com");
 		}
 
-		task ("Then: Verify No cookies are set, not even the functional cookie: GUEST_LANGUAGE_ID verify cookie banner is present.") {
+		task ("Then: Verify No cookies are set, not even the functional cookie: GUEST_LANGUAGE_ID verify cookie banner with site level is present.") {
 			CookieBanner.verifyCookieBannerIsPresent();
+
+			// AssertTextEquals(
+			// 	locator1 = "CookieBannerAdmin#PRIVACY_POLICY_LINK",
+			// 	value1 = SITE_LEVEL_1);
+
+			// CookieBannerAdmin.verifyAllConfigurationElementsAreConfigured(text = "SITE_LEVEL");
 
 			CookieConsentPanel.verifyCookiesAreNotPresent();
 
 			CookieHelper.checkSelectedCookieIsNotPresent(
 				cookieName = "GUEST_LANGUAGE_ID",
 				expectedCookieValue = "en_US");
+		}
+
+		task ("And: End User first visits the instance,Verify cookie banner with instance level is present.") {
+			UserBar.signOut();
+
+			User.firstLoginUI(
+				password = "test",
+				specificURL = "http:localhost.com:8080",
+				userEmailAddress = "test@liferay.com");
+
+			CookieBanner.verifyCookieBannerIsPresent();
+
+			// AssertTextEquals(
+			// 	locator1 = "CookieBannerAdmin#PRIVACY_POLICY_LINK",
+			// 	value1 = SITE_LEVEL_2);
+
+			// CookieBannerAdmin.verifyAllConfigurationElementsAreConfigured(text = "INSTANCE_LEVEL");
 		}
 	}
 
