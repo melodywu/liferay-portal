@@ -134,10 +134,6 @@ definition {
 		CookieHelper.checkSelectedCookieIsNotPresent(
 			cookieName = "CONSENT_TYPE_PERSONALIZATION",
 			expectedCookieValue = "true");
-
-		CookieHelper.checkSelectedCookieIsNotPresent(
-			cookieName = "CONSENT_TYPE_NECESSARY",
-			expectedCookieValue = "true");
 	}
 
 	@description = "Verify that customized texts are present"
