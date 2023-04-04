@@ -778,7 +778,7 @@ definition {
 
 	@priority = 5
 	test ImportLARsOnStagedSite {
-		property portal.acceptance = "true";
+		property portal.acceptance = "melody";
 		property test.name.skip.portal.instance = "StagingUsecase#ImportLARsOnStagedSite";
 		property testray.component.names = "Page Administration,Training,Web Content Administration";
 
