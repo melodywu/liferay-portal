@@ -1247,36 +1247,14 @@ definition {
 		}
 	}
 
-	@description = "This is a use case for LPS-133675. Javascript fields should be propagated on site templates."
-	@priority = 3
-	test ViewJavaScriptPropagateviaSiteTemplate {
-		var javascript = '''alert("alert!");''';
+	@description = "This is a use case for LPS-174431 TC-2. Verify there's a toast message appears when the Site Template's Page saved with friendly URL collision."
+	@priority = 4
+	test ViewAlertAfterEditExistingTemplatePageURLCollision {
+		property custom.properties = "feature.flag.LPS-174431=true";
 
-		task ("Given: User adds new site template") {
+		task ("Given User adds page in new site based on the new site template") {
 			SiteTemplates.addCP(siteTemplateName = "Site Template Name");
-		}
 
-		task ("When: User adds javascript code to the site") {
-			SiteTemplates.gotoSettingsCP(siteTemplateName = "Site Template Name");
-
-			SiteTemplates.AddSiteTemplateJavaScript(
-				javaScript = ${javascript},
-				pageSet = "true");
-		}
-
-		task ("Then: The script should be escaped in on the home page of th site template") {
-			ProductMenu.gotoPortlet(
-				category = "Site Builder",
-				portlet = "Pages");
-
-			PagesAdmin.gotoPageEllipsisMenuItem(
-				menuItem = "View",
-				pageName = "Home");
-
-			AssertConfirm(value1 = "alert!");
-		}
-
-		task ("When: User adds a new site based on the site template") {
 			ApplicationsMenu.gotoPortlet(
 				category = "Sites",
 				panel = "Control Panel",
@@ -1286,12 +1264,353 @@ definition {
 				siteName = "Site Name",
 				siteTemplateName = "Site Template Name",
 				siteTemplateTab = "Custom Site Templates");
+
+			PagesAdmin.openPagesAdmin(siteURLKey = "Site Name");
+
+			PagesAdmin.addPage(
+				pageName = "Page1",
+				sitePageType = "Widget Page");
 		}
 
-		task ("Then: The javascript will be inherited from the site template") {
-			SiteTemplates.ViewSiteTemplateJavaScript(
-				javaScript = ${javascript},
-				pageSet = "true");
+		task ("And User adds page in site template") {
+			SiteTemplatesNavigator.openSiteTemplatesAdmin();
+
+			SiteTemplates.addSitePageViaSiteTemplateCP(
+				pageName = "PageX",
+				siteTemplateName = "Site Template Name");
+		}
+
+		task ("When User click OK to save the existing page with Friendly URL conflicts in site template") {
+			SiteTemplatesNavigator.openSiteTemplatesAdmin();
+
+			LexiconEntry.gotoEntryMenuItem(
+				menuItem = "Manage",
+				rowEntry = "Site Template Name");
+
+			ProductMenu.gotoPortlet(
+				category = "Site Builder",
+				portlet = "Pages");
+
+			PagesAdmin.gotoPageEllipsisMenuItem(
+				menuItem = "Configure",
+				pageName = "PageX");
+
+			Type(
+				inputFieldId = "friendlyURL",
+				locator1 = "TextInput#INPUT_ID",
+				value1 = "/page1");
+
+			ClickNoError(
+				key_text = "Save",
+				locator1 = "Button#ANY");
+
+			AssertConfirm.waitForConfirmation(value1 = "The friendly URL of the site template page you are trying to save conflicts with some of the own pages of the sites created from this site template. Are you sure you want to configure the site template page with this friendly URL?");
+		}
+
+		task ("Then assert that the warning pop-up appears") {
+			Alert.viewWarningSpecific(warningMessage = "Warning:The site template page was saved with a conflicting friendly URL.");
+		}
+	}
+
+	@description = "This is a use case for LPS-174431 TC-1-2. Verify there's a confirmation dialog when a friendly URL collision exists and Administrator tries to edit an existing Site Template page."
+	@priority = 4
+	test ViewConfirmationDialogOfEditExistingTemplatePageURLCollision {
+		property custom.properties = "feature.flag.LPS-174431=true";
+
+		task ("Given User adds page in new site based on the new site template") {
+			SiteTemplates.addCP(siteTemplateName = "Site Template Name");
+
+			ApplicationsMenu.gotoPortlet(
+				category = "Sites",
+				panel = "Control Panel",
+				portlet = "Sites");
+
+			Site.addSiteTemplateCP(
+				siteName = "Site Name",
+				siteTemplateName = "Site Template Name",
+				siteTemplateTab = "Custom Site Templates");
+
+			PagesAdmin.openPagesAdmin(siteURLKey = "Site Name");
+
+			PagesAdmin.addPage(
+				pageName = "Page1",
+				sitePageType = "Widget Page");
+		}
+
+		task ("And User adds page in site template") {
+			SiteTemplatesNavigator.openSiteTemplatesAdmin();
+
+			SiteTemplates.addSitePageViaSiteTemplateCP(
+				pageName = "PageX",
+				siteTemplateName = "Site Template Name");
+		}
+
+		task ("When User edits page with Friendly URL conflicts in site template") {
+			SiteTemplatesNavigator.openSiteTemplatesAdmin();
+
+			LexiconEntry.gotoEntryMenuItem(
+				menuItem = "Manage",
+				rowEntry = "Site Template Name");
+
+			ProductMenu.gotoPortlet(
+				category = "Site Builder",
+				portlet = "Pages");
+
+			PagesAdmin.gotoPageEllipsisMenuItem(
+				menuItem = "Configure",
+				pageName = "PageX");
+
+			Type(
+				inputFieldId = "friendlyURL",
+				locator1 = "TextInput#INPUT_ID",
+				value1 = "/page1");
+
+			ClickNoError(
+				key_text = "Save",
+				locator1 = "Button#ANY");
+		}
+
+		task ("Then There is javascript error window present with message") {
+			AssertConfirm.waitForConfirmation(value1 = "The friendly URL of the site template page you are trying to save conflicts with some of the own pages of the sites created from this site template. Are you sure you want to configure the site template page with this friendly URL?");
+		}
+	}
+
+	@description = "This is a use case for LPS-174431 TC-1-1. Verify there's a confirmation dialog when a friendly URL collision exists and Administrator tries to add a new Site Template page."
+	@priority = 4
+	test ViewConfirmationDialogOfNewTemplatePageURLCollision {
+		property custom.properties = "feature.flag.LPS-174431=true";
+
+		task ("Given User adds page in new site based on the new site template") {
+			SiteTemplates.addCP(siteTemplateName = "Site Template Name");
+
+			ApplicationsMenu.gotoPortlet(
+				category = "Sites",
+				panel = "Control Panel",
+				portlet = "Sites");
+
+			Site.addSiteTemplateCP(
+				siteName = "Site Name",
+				siteTemplateName = "Site Template Name",
+				siteTemplateTab = "Custom Site Templates");
+
+			PagesAdmin.openPagesAdmin(siteURLKey = "Site Name");
+
+			PagesAdmin.addPage(
+				pageName = "Page1",
+				sitePageType = "Widget Page");
+		}
+
+		task ("When User adds page with Friendly URL conflicts in site template") {
+			SiteTemplatesNavigator.openSiteTemplatesAdmin();
+
+			SiteTemplates.addSitePageViaSiteTemplateCP(
+				pageName = "Page1",
+				siteTemplateName = "Site Template Name");
+		}
+
+		task ("Then There is javascript error window present with message") {
+			AssertTextEquals(
+				locator1 = "Message#ERROR_3",
+				value1 = "Site template page friendly URL is conflicting with the page friendly URL in some of the sites created from this template Page Page1 of Site Name");
+		}
+	}
+
+	// @description = "This is a use case for LPS-133675. Javascript fields should be propagated on site templates."
+	// @priority = 3
+	// test ViewJavaScriptPropagateviaSiteTemplate {
+	// 	var javascript = '''alert("alert!");''';
+
+	// 	task ("Given: User adds new site template") {
+	// 		SiteTemplates.addCP(siteTemplateName = "Site Template Name");
+	// 	}
+
+	// 	task ("When: User adds javascript code to the site") {
+	// 		SiteTemplates.gotoSettingsCP(siteTemplateName = "Site Template Name");
+
+	// 		SiteTemplates.AddSiteTemplateJavaScript(
+	// 			javaScript = ${javascript},
+	// 			pageSet = "true");
+	// 	}
+
+	// 	task ("Then: The script should be escaped in on the home page of th site template") {
+	// 		ProductMenu.gotoPortlet(
+	// 			category = "Site Builder",
+	// 			portlet = "Pages");
+
+	// 		PagesAdmin.gotoPageEllipsisMenuItem(
+	// 			menuItem = "View",
+	// 			pageName = "Home");
+
+	// 		AssertConfirm(value1 = "alert!");
+	// 	}
+
+	// 	task ("When: User adds a new site based on the site template") {
+	// 		ApplicationsMenu.gotoPortlet(
+	// 			category = "Sites",
+	// 			panel = "Control Panel",
+	// 			portlet = "Sites");
+
+	// 		Site.addSiteTemplateCP(
+	// 			siteName = "Site Name",
+	// 			siteTemplateName = "Site Template Name",
+	// 			siteTemplateTab = "Custom Site Templates");
+	// 	}
+
+	// 	task ("Then: The javascript will be inherited from the site template") {
+	// 		SiteTemplates.ViewSiteTemplateJavaScript(
+	// 			javaScript = ${javascript},
+	// 			pageSet = "true");
+	// 	}
+	// }
+
+	@description = "This is a use case for LPS-174431 TC-5. Verify that the warning messages, confirmation dialog, and toast message are not present when the feature flag is not present."
+	@priority = 4
+	test ViewNoWarnignMessageConfirmationDialogToastWithoutFeatrueFlag {
+		task ("Given User adds page in new site based on the new site template") {
+			SiteTemplates.addCP(siteTemplateName = "Site Template Name");
+
+			ApplicationsMenu.gotoPortlet(
+				category = "Sites",
+				panel = "Control Panel",
+				portlet = "Sites");
+
+			Site.addSiteTemplateCP(
+				siteName = "Site Name",
+				siteTemplateName = "Site Template Name",
+				siteTemplateTab = "Custom Site Templates");
+
+			PagesAdmin.openPagesAdmin(siteURLKey = "Site Name");
+
+			PagesAdmin.addPage(
+				pageName = "Page1",
+				sitePageType = "Widget Page");
+		}
+
+		task ("When User adds page with Friendly URL conflicts in site template") {
+			SiteTemplatesNavigator.openSiteTemplatesAdmin();
+
+			SiteTemplates.addSitePageViaSiteTemplateCP(
+				pageName = "Page1",
+				siteTemplateName = "Site Template Name");
+		}
+
+		task ("Then Warning messages, confirmation dialog, and toast message are not present ") {
+			AssertAlertNotPresent();
+
+			Alert.viewWarningSpecificNotPresent(warningMessage = "Warning:The site template page was saved with a conflicting friendly URL.");
+
+			AssertElementNotPresent(
+				locator1 = "Message#ERROR_3",
+				value1 = "Site template page friendly URL is conflicting with the page friendly URL in some of the sites created from this template Page Page1 of Site Name");
+		}
+	}
+
+	@description = "This is a use case for LPS-174431 TC-3. Verify there's a warning message when the Site Template's Page has a friendly URL that matches with a non-connecting Site's similar friendly URL."
+	@priority = 4
+	test ViewWarnignMessageAfterEditExistingTemplatePageURLCollision {
+		property custom.properties = "feature.flag.LPS-174431=true";
+
+		task ("Given User adds page in new site based on the new site template") {
+			SiteTemplates.addCP(siteTemplateName = "Site Template Name");
+
+			ApplicationsMenu.gotoPortlet(
+				category = "Sites",
+				panel = "Control Panel",
+				portlet = "Sites");
+
+			Site.addSiteTemplateCP(
+				siteName = "Site Name",
+				siteTemplateName = "Site Template Name",
+				siteTemplateTab = "Custom Site Templates");
+
+			PagesAdmin.openPagesAdmin(siteURLKey = "Site Name");
+
+			PagesAdmin.addPage(
+				pageName = "Page1",
+				sitePageType = "Widget Page");
+		}
+
+		task ("And User adds page in site template") {
+			SiteTemplatesNavigator.openSiteTemplatesAdmin();
+
+			SiteTemplates.addSitePageViaSiteTemplateCP(
+				pageName = "PageX",
+				siteTemplateName = "Site Template Name");
+		}
+
+		task ("When User click OK to save the existing page with Friendly URL conflicts in site template") {
+			SiteTemplatesNavigator.openSiteTemplatesAdmin();
+
+			LexiconEntry.gotoEntryMenuItem(
+				menuItem = "Manage",
+				rowEntry = "Site Template Name");
+
+			ProductMenu.gotoPortlet(
+				category = "Site Builder",
+				portlet = "Pages");
+
+			PagesAdmin.gotoPageEllipsisMenuItem(
+				menuItem = "Configure",
+				pageName = "PageX");
+
+			Type(
+				inputFieldId = "friendlyURL",
+				locator1 = "TextInput#INPUT_ID",
+				value1 = "/page1");
+
+			ClickNoError(
+				key_text = "Save",
+				locator1 = "Button#ANY");
+
+			AssertConfirm.waitForConfirmation(value1 = "The friendly URL of the site template page you are trying to save conflicts with some of the own pages of the sites created from this site template. Are you sure you want to configure the site template page with this friendly URL?");
+		}
+
+		task ("Then There is javascript error window present with message") {
+			AssertTextEquals(
+				locator1 = "Message#ERROR_3",
+				value1 = "Site template page friendly URL is conflicting with the page friendly URL in some of the sites created from this template Page Page1 of Site Name");
+		}
+	}
+
+	@description = "This is a use case for LPS-174431 TC-4. Verify there's a confirmation dialog when a friendly URL collision exists and Administrator tries to add a new Site Template page."
+	@priority = 4
+	test ViewWarnignMessageOfMultipleEntriesWithTemplatePageURLCollision {
+		property custom.properties = "feature.flag.LPS-174431=true";
+
+		task ("Given User adds similar friendly URL page with page in template to 5 sites based on the template") {
+			SiteTemplates.addCP(siteTemplateName = "Site Template Name");
+
+			for (var name : list "1,2,3,4,5") {
+				ApplicationsMenu.gotoPortlet(
+					category = "Sites",
+					panel = "Control Panel",
+					portlet = "Sites");
+
+				Site.addSiteTemplateCP(
+					siteName = "Site Name${name}",
+					siteTemplateName = "Site Template Name",
+					siteTemplateTab = "Custom Site Templates");
+
+				PagesAdmin.openPagesAdmin(siteURLKey = "Site Name${name}");
+
+				PagesAdmin.addPage(
+					pageName = "Page1",
+					sitePageType = "Widget Page");
+			}
+		}
+
+		task ("When User adds page with same Friendly URL conflicts in site template") {
+			SiteTemplatesNavigator.openSiteTemplatesAdmin();
+
+			SiteTemplates.addSitePageViaSiteTemplateCP(
+				pageName = "Page1",
+				siteTemplateName = "Site Template Name");
+		}
+
+		task ("Then multiple entries are displayed in the warning message ") {
+			AssertTextEquals(
+				locator1 = "Message#ERROR_3",
+				value1 = "Site template page friendly URL is conflicting with the page friendly URL in some of the sites created from this template Page Page1 of Site Name1 Page Page1 of Site Name2 Page Page1 of Site Name3 Page Page1 of Site Name4 Page Page1 of Site Name5");
 		}
 	}
 
