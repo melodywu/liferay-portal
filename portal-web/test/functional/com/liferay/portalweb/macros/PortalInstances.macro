@@ -27,6 +27,13 @@ definition {
 			Uncheck(locator1 = "Checkbox#ACTIVE");
 		}
 
+		if (isSet(virtualInstanceInitializer)) {
+			Select(
+				key_fieldLabel = "Virtual Instance Initializer",
+				locator1 = "Select#GENERIC_SELECT_FIELD",
+				value1 = "${virtualInstanceInitializer}");
+		}
+
 		if (isSet(instanceScreenName)) {
 			Type(
 				locator1 = "TextInput#VIRTUAL_INSTANCE_SCREEN_NAME",
