@@ -1533,6 +1533,66 @@ definition {
 		}
 	}
 
+	@description = "This is a use case for LRQA-79857. The OAuth objects within the Scopes should only be for the instance in which they were created for."
+	test OAuth2ObjectWithinScopeOnlyForCreatedInstance {
+		property custom.properties = "include-and-override=portal-liferay-online.properties";
+		property portal.acceptance = "melody";
+		property test.name.skip.portal.instance = "OAuth2#OAuthObjectWithinScopeOnlyForCreatedInstance";
+
+		task ("Given add two virtual instances, one instance use  RayLife Virtual Instance Initializer") {
+			ApplicationsMenu.gotoPortlet(
+				category = "System",
+				panel = "Control Panel",
+				portlet = "Virtual Instances");
+
+			PortalInstances.addCP(
+				mailDomain = "www.able.com",
+				virtualHost = "www.able.com",
+				webId = "www.able.com");
+
+			ApplicationsMenu.gotoPortlet(
+				category = "System",
+				panel = "Control Panel",
+				portlet = "Virtual Instances");
+
+			PortalInstances.addCP(
+				mailDomain = "www.baker.com",
+				virtualHost = "www.baker.com",
+				virtualInstanceInitializer = "Raylife D2C",
+				webId = "www.baker.com");
+		}
+
+		task ("When visit the www.baker.com instance check Raylife objects are being displayed") {
+			User.firstLoginPG(
+				password = "test",
+				specificURL = "http://www.baker.com:8080",
+				userEmailAddress = "test@www.baker.com");
+
+			Navigator.openSpecificURL(url = "http://www.baker.com:8080/group/control_panel/manage?p_p_id=com_liferay_oauth2_provider_web_internal_portlet_OAuth2AdminPortlet");
+
+			LexiconEntry.gotoEntryMenuItem(
+				menuItem = "Edit",
+				rowEntry = "Analytics Cloud");
+
+			Navigator.gotoNavItem(navItem = "Scopes");
+		}
+
+		task ("Then visit the www.able.com instance check Raylife objects are being displayed") {
+			User.firstLoginPG(
+				password = "test",
+				specificURL = "http://www.baker.com:8080",
+				userEmailAddress = "test@www.baker.com");
+
+			Navigator.openSpecificURL(url = "http://www.able.com:8080/group/control_panel/manage?p_p_id=com_liferay_oauth2_provider_web_internal_portlet_OAuth2AdminPortlet");
+
+			LexiconEntry.gotoEntryMenuItem(
+				menuItem = "Edit",
+				rowEntry = "Analytics Cloud");
+
+			Navigator.gotoNavItem(navItem = "Scopes");
+		}
+	}
+
 	@description = "This is a use case for LRQA-48782. Add and Edit OAuth SAP entries."
 	test OAuth2SAPEntriesCanBeAddedAndEdited {
 		property custom.properties = "access.control.sanitize.security.exception=false${line.separator}json.service.serialize.throwable=true";
