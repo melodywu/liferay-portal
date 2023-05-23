@@ -13,11 +13,11 @@ definition {
 	property testray.main.component.name = "SAML";
 
 	setUp {
-		TestCase.setUpPortalInstance();
+		// TestCase.setUpPortalInstance();
 
 		User.firstLoginPG();
 
-		SAML.enableSAMLDebugLogs();
+		// SAML.enableSAMLDebugLogs();
 	}
 
 	@description = "This is a use case for LPS-32577. Add user inherited roles as SAML attribute statements."
@@ -1467,6 +1467,203 @@ definition {
 
 		task ("Assert error message (Basic User Fields: All attribute mappings must specify a SAML attribute)") {
 			SAML.viewAllAttributeMappingsMustSpecifyASAMLAttributeErrorMessage();
+		}
+	}
+
+	// @description = "This is a use case for LPS-182493 TC-5: Verify user could log in via SAML (Portal to Portal) when password creation is disabled."
+	// @priority = 3
+	// test CanLoginViaSAMLWithDisablePasswordCreation {
+	// 	property portal.acceptance = "melody";
+	// 	property test.name.skip.portal.instance = "SAML#CanLoginViaSAMLWithDisablePasswordCreation";
+
+	// 	task ("Given Add virtual instance able.com setup IDP as localhost:8080 and SP as able.com:8080") {
+	// 		HeadlessPortalInstanceAPI.addPortalInstance(
+	// 			domain = "liferay.com",
+	// 			portalInstanceId = "www.able.com",
+	// 			virtualHost = "www.able.com");
+
+	// 		User.logoutPG();
+
+	// 		User.viewLoggedOutPG();
+
+	// 		SAML.setupIDP(
+	// 			idpURL = "http://localhost:8080",
+	// 			samlEntityId = "samlidp",
+	// 			userEmailAddress = "test@liferay.com");
+
+	// 		SAML.setupSP(
+	// 			encryptionCertificate = "true",
+	// 			samlEntityId = "samlsp",
+	// 			spURL = "http://www.able.com:8080",
+	// 			userEmailAddress = "test@liferay.com");
+
+	// 		SAML.addIDPConfigurationsToServiceProvider(
+	// 			idpAttributeMapping = "UUID,emailAddress,firstName,lastName,screenName",
+	// 			idpEntityId = "samlidp",
+	// 			idpKeepAliveURL = "http://localhost:8080/c/portal/saml/keep_alive",
+	// 			idpURL = "http://localhost:8080",
+	// 			nameIdentifierFormat = "Email Address",
+	// 			spURL = "http://www.able.com:8080",
+	// 			userEmailAddress = "test@liferay.com",
+	// 			userResolution = "dynamic");
+
+	// 		SAML.enableSPRoles(
+	// 			samlEntityId = "samlsp",
+	// 			spURL = "http://www.able.com:8080",
+	// 			userEmailAddress = "test@liferay.com");
+
+	// 		SAML.addSPConfigurationsToIdentityProvider(
+	// 			idpURL = "http://localhost:8080",
+	// 			nameIdentifierAttributeName = "emailAddress",
+	// 			nameIdentifierFormat = "Email Address",
+	// 			spAttributes = '''emailAddress
+	// 			firstName
+	// 			lastName
+	// 			screenName
+	// 			uuid''',
+	// 			spEntityId = "samlsp",
+	// 			spKeepAliveURL = "http://www.able.com:8080/c/portal/saml/keep_alive",
+	// 			spURL = "http://www.able.com:8080",
+	// 			userEmailAddress = "test@liferay.com");
+	// 	}
+
+	// 	task ("When Disable Allow Custom Password At Account Creation password in SP") {
+	// 		User.logoutPG();
+
+	// 		User.firstLoginUI(
+	// 			password = "test",
+	// 			specificURL = "http://www.able.com:8080",
+	// 			userEmailAddress = "test@liferay.com");
+
+	// 		ApplicationsMenu.gotoPortlet(
+	// 			category = "Configuration",
+	// 			panel = "Control Panel",
+	// 			portlet = "Instance Settings");
+
+	// 		PortalSettings.gotoConfiguration(
+	// 			configurationCategory = "Users",
+	// 			configurationName = "Fields",
+	// 			configurationScope = "Virtual Instance Scope");
+
+	// 		FormFields.disableCheckbox(fieldName = "login.create.account.allow.custom.password");
+
+	// 		PortletEntry.save();
+
+	// 		SAML.addAndSyncNewUser(
+	// 			creatorEmailAddress = "test@liferay.com",
+	// 			creatorPassword = "test",
+	// 			newUserEmailAddress = "user1@liferay.com",
+	// 			newUserFirstName = "first",
+	// 			newUserLastName = "tester",
+	// 			newUserPortalURL = "http://localhost:8080",
+	// 			newUserScreenName = "user1",
+	// 			portalInstanceName = "localhost",
+	// 			spURL = "http://www.able.com:8080");
+	// 	}
+
+		// task ("Then Verify that the user successfully logged in to SP") {
+		// 	SAML.executeSPInitiatedSSO(
+		// 		idpName = "samlidp",
+		// 		samlMultiIdPs = "true",
+		// 		spURL = "http://www.able.com:9080");
+
+		// 	User.viewLoggedInPG();
+
+		// 	Navigator.openSpecificURL(url = "http://www.able.com:8080");
+
+		// 	User.viewLoggedInPG();
+		// }
+	// }
+
+	@description = "This is a use case for LPS-182493 TC-5: Verify user could log in via SAML (Portal to Portal) when password creation is disabled."
+	@priority = 3
+	test CanLoginViaSAMLWithDisablePasswordCreation {
+		property portal.acceptance = "melody";
+		property test.name.skip.portal.instance = "SAML#CanLoginViaSAMLWithDisablePasswordCreation";
+
+		task ("Given: Create user, custom domain site and create SAML link between baker.com and able.com") {
+			SAML.addVirtualInstances(virtualHosts = "www.able.com");
+
+			SAML.configureLiferaySAMLAsIdP(
+				idpURL = "http://localhost:8080",
+				samlEntityId = "samlidp",
+				userEmailAddress = "test@liferay.com");
+
+			JSONUser.addUser(
+				userEmailAddress = "userea1@liferay.com",
+				userFirstName = "userfn1",
+				userLastName = "userln1",
+				userScreenName = "usersn1");
+
+			JSONUser.setFirstPassword(
+				agreeToTermsAndAnswerReminderQuery = "true",
+				requireReset = "false",
+				userEmailAddress = "userea1@liferay.com");
+
+			SAML.setupSP(
+				samlEntityId = "samlsp",
+				spURL = "http://www.able.com:8080",
+				userEmailAddress = "test@www.able.com");
+
+			User.firstLoginUI(
+				password = "test",
+				specificURL = "http://www.able.com:8080",
+				userEmailAddress = "test@www.able.com");
+
+			SAML.connectSPAndIdP(
+				idpAttributeMapping = "UUID,screenName,firstName,lastName,emailAddress",
+				idpEntityId = "samlidp",
+				idpURL = "http://localhost:8080",
+				notLogout = "true",
+				spAttributes = '''emailAddress
+					firstName
+					lastName
+					screenName
+					uuid''',
+				spEntityId = "samlsp",
+				spURL = "http://www.able.com:8080",
+				sPUserEmailAddress = "test@www.able.com",
+				userResolution = "dynamic");
+		}
+
+		task ("And: Disable the Authn Request Signing Allows Dynamic ACS URL checkbox") {
+			SAML.goToSAMLAdmin(baseURL = "http://www.able.com:8080");
+
+			ApplicationsMenu.gotoPortlet(
+				category = "Configuration",
+				panel = "Control Panel",
+				portlet = "Instance Settings");
+
+			PortalSettings.gotoConfiguration(
+				configurationCategory = "Users",
+				configurationName = "Fields",
+				configurationScope = "Virtual Instance Scope");
+
+			FormFields.disableCheckbox(fieldName = "login.create.account.allow.custom.password");
+
+			PortletEntry.save();
+
+			User.logoutPG(specificURL = "http://www.able.com:8080");
+
+			User.viewLoggedOutPG();
+		}
+
+		task ("When: User log in to able.com normally and log out") {
+			SAML.executeSPInitiatedSSO(
+				idpName = "samlidp",
+				samlMultiIdPs = "true",
+				spURL = "http://www.able.com:8080");
+
+			User.viewLoggedInPG();
+
+			Navigator.openSpecificURL(url = "http://www.able.com:8080");
+
+			SAML.executeSPInitiatedSSO(
+				password = "test",
+				spURL = "http://www.able.com:8080",
+				userEmailAddress = "userea1@liferay.com");
+
+			User.viewLoggedInPG();
 		}
 	}
 
