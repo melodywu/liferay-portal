@@ -74,8 +74,9 @@ definition {
 		Theme.configureLookAndFeelSpecificLook();
 
 		Click(
+			key_indexNumber = 2,
 			key_text = "Change Current Theme",
-			locator1 = "Button#ANY");
+			locator1 = "Button#ANY_N");
 
 		SelectFrame(locator1 = "IFrame#MODAL_BODY");
 
