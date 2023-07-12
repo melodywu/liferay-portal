@@ -36,9 +36,13 @@ definition {
 		property database.types = "db2,hypersonic,mariadb,mysql,oracle,postgresql,sqlserver,sybase";
 		property environment.acceptance = "true";
 		property operating.system.types = "alpine,amazonlinux,centos,debian,fedora,orcllinux,osx,redhat,rockylinux,solaris,suse,ubuntu,windows";
-		property portal.acceptance = "quarantine";
+		property portal.acceptance = "melody";
+		property test.liferay.virtual.instance = "false";
 
-		Staging.remoteStagingSetUp(siteName = "Site Name");
+		Staging.remoteStagingSetUp(
+			remotePort = 9080,
+			remoteStaging = "true",
+			siteName = "Site Name");
 
 		Navigator.gotoSitePage(
 			pageName = "Staging Test Page",
