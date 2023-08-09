@@ -175,7 +175,7 @@ definition {
 	}
 
 	@priority = 5
-	test AddDMDocumentWCArticleStagingLocalLive {
+	test AddDMDocumentWCArticleStagingLocalLives {
 		property testray.component.names = "Training";
 
 		JSONLayout.addWidgetToPublicLayout(
