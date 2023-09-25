@@ -118,6 +118,54 @@ definition {
 		}
 	}
 
+	@description = "This is a use case for LRQA-82701. Check that Authentication settings could be exported to OSGI config file and could be imported from OSGI config file."
+	@priority = 4
+	test CanExportAndImportPanelSettingByOSGIConfigFile {
+		property apacheds.enabled = "true";
+		property portal.acceptance = "melody";
+		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
+
+		task ("Given: Place a config file into OSGi folder to configure LDAP Authentication Configuration of system setting") {
+			var companyId = JSONCompany.getCompanyId();
+
+			OSGiConfig.deployOSGiConfigFile(
+				osgiConfigFileName = "com.liferay.portal.security.ldap.authenticator.configuration.LDAPAuthConfiguration~companyId.config",
+				osgiConfigs = "enabled=B\"true\"");
+
+			OSGiConfig.waitForOSGiConfig();
+		}
+
+		task ("When: Go to system settings") {
+			Navigator.openURL();
+
+			SystemSettings.openSystemSettingsAdmin();
+
+			SystemSettings.gotoConfiguration(
+				configurationCategory = "LDAP",
+				configurationName = "Authentication",
+				configurationScope = "Virtual Instance Scope");
+		}
+
+		task ("Then: Verify the configuration of the Enabled in Authentication of LDAP is enabled.") {
+			AssertChecked.assertCheckedNotVisible(
+				key_settingFieldName = "Enabled",
+				locator1 = "SystemSettings#SETTING_FIELD_NAME_CHECKBOX");
+		}
+
+		task ("When: Go to system settings") {
+			LexiconEntry.gotoEllipsisMenuItem(menuItem = "Export");
+		}
+
+		task ("Then: Verify the OSGI config file of Authentication is enabled.") {
+			var configName = "com.liferay.portal.security.ldap.authenticator.configuration.LDAPAuthConfiguration";
+
+			OSGiConfig.assertTextInOSGiConfig(
+				osgiConfigFileName = "${configName}.config",
+				text = "enabled=B\"true\"");
+		}
+	}
+
 	@description = "This is a use case for LPS-65498. LDAP user can be imported with blank password."
 	@priority = 5
 	test CanImportLDAPUserWithBlankPassword {
@@ -218,6 +266,98 @@ definition {
 			User.logoutAndLoginPG(
 				userLoginEmailAddress = "ldapuseremail@liferay.com",
 				userLoginFullName = "ldapusergivenname ldapusersn");
+		}
+	}
+
+	@description = "This is a use case for LRQA-82701. Check LDAP login doesn't work if Import is not enabled."
+	@priority = 4
+	test CannotLoginViaLDAPWithImportDisable {
+		property apacheds.enabled = "true";
+		property portal.acceptance = "melody";
+		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
+
+		task ("Given: Adds LDAP server and test connection") {
+			PortalSettings.addLDAPServer(ldapServerName = "ApacheDS Server");
+
+			PortalSettings.editLDAPServer(ldapServerName = "ApacheDS Server");
+
+			PortalSettings.testLDAPConnection();
+		}
+
+		task ("Given: Configure LDAP settings") {
+			SystemSettings.openSystemSettingsAdmin();
+
+			SystemSettings.gotoConfiguration(
+				configurationCategory = "LDAP",
+				configurationName = "Authentication",
+				configurationScope = "Virtual Instance Scope");
+
+			FormFields.viewCheckboxNotChecked(fieldName = "Enabled");
+
+			PortalSettings.configureLDAPSetting(enableSettingList = "enabled");
+		}
+
+		task ("When: Shutdown and start server") {
+			Portlet.shutdownServer();
+
+			Portlet.startServer(deleteLiferayHome = "false");
+		}
+
+		task ("Then: login and assert authentication failed message") {
+			User.firstLoginPG();
+
+			User.logoutPG();
+
+			User.firstLoginUI(userEmailAddress = "testUser2@liferay.com");
+
+			WaitForElementPresent(locator1 = "Home#SITE_NAME_LOGO");
+
+			AssertTextEquals.assertPartialText(
+				locator1 = "Message#ERROR_DISMISSIBLE",
+				value1 = "Authentication failed. Please try again.");
+		}
+	}
+
+	@description = "This is a use case for LRQA-82701. Check LDAP login doesn't work if no server configured."
+	@priority = 4
+	test CannotLoginViaLDAPWithNoServerConfigured {
+		property apacheds.enabled = "true";
+		property portal.acceptance = "melody";
+		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
+
+		task ("Given: Configure LDAP settings") {
+			SystemSettings.openSystemSettingsAdmin();
+
+			SystemSettings.gotoConfiguration(
+				configurationCategory = "LDAP",
+				configurationName = "Authentication",
+				configurationScope = "Virtual Instance Scope");
+
+			FormFields.viewCheckboxNotChecked(fieldName = "Enabled");
+
+			PortalSettings.configureLDAPSetting(enableSettingList = "enabled");
+		}
+
+		task ("When: Shutdown and start server") {
+			Portlet.shutdownServer();
+
+			Portlet.startServer(deleteLiferayHome = "false");
+		}
+
+		task ("Then: login and assert authentication failed message") {
+			User.firstLoginPG();
+
+			User.logoutPG();
+
+			User.firstLoginUI(userEmailAddress = "testUser2@liferay.com");
+
+			WaitForElementPresent(locator1 = "Home#SITE_NAME_LOGO");
+
+			AssertTextEquals.assertPartialText(
+				locator1 = "Message#ERROR_DISMISSIBLE",
+				value1 = "Authentication failed. Please try again.");
 		}
 	}
 
