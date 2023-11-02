@@ -899,18 +899,6 @@ public class JournalDisplayContext {
 			portletURL.setParameter("keywords", keywords);
 		}
 
-		String orderByCol = getOrderByCol();
-
-		if (Validator.isNotNull(orderByCol)) {
-			portletURL.setParameter("orderByCol", orderByCol);
-		}
-
-		String orderByType = getOrderByType();
-
-		if (Validator.isNotNull(orderByType)) {
-			portletURL.setParameter("orderByType", orderByType);
-		}
-
 		String searchIn = _getSearchIn();
 
 		if (Validator.isNotNull(searchIn)) {
@@ -921,6 +909,18 @@ public class JournalDisplayContext {
 
 		if (Validator.isNotNull(searchLocation)) {
 			portletURL.setParameter("searchLocation", searchLocation);
+		}
+
+		String orderByCol = getOrderByCol();
+
+		if (Validator.isNotNull(orderByCol)) {
+			portletURL.setParameter("orderByCol", orderByCol);
+		}
+
+		String orderByType = getOrderByType();
+
+		if (Validator.isNotNull(orderByType)) {
+			portletURL.setParameter("orderByType", orderByType);
 		}
 
 		if (Validator.isNotNull(tab)) {
