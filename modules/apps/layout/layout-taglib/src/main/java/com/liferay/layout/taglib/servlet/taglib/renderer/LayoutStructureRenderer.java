@@ -49,6 +49,7 @@ import com.liferay.layout.util.structure.collection.EmptyCollectionOptions;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.petra.string.StringUtil;
+import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Layout;
@@ -816,9 +817,10 @@ public class LayoutStructureRenderer {
 		throws Exception {
 
 		if ((infoForm == null) ||
-			!_hasAddPermission(
-				PortalUtil.getClassName(
-					formStyledLayoutStructureItem.getClassNameId()))) {
+			(FeatureFlagManagerUtil.isEnabled("LPS-169923") &&
+			 !_hasAddPermission(
+				 PortalUtil.getClassName(
+					 formStyledLayoutStructureItem.getClassNameId())))) {
 
 			return;
 		}

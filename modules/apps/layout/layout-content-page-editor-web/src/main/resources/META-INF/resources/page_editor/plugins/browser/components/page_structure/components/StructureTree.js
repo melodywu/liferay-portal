@@ -732,9 +732,12 @@ function visit(
 			if (
 				(item.type === LAYOUT_DATA_ITEM_TYPES.collection &&
 					(!item.config.collection ||
-						restrictedItemIds.has(item.itemId))) ||
+						(Liferay.FeatureFlags['LPS-169923'] &&
+							restrictedItemIds.has(item.itemId)))) ||
 				(item.type === LAYOUT_DATA_ITEM_TYPES.form &&
-					(!formIsMapped(item) || formIsRestricted(item)))
+					(!formIsMapped(item) ||
+						(Liferay.FeatureFlags['LPS-169923'] &&
+							formIsRestricted(item))))
 			) {
 				return;
 			}
