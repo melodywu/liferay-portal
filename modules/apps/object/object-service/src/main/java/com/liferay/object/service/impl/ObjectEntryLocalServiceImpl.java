@@ -42,6 +42,7 @@ import com.liferay.object.exception.ObjectRelationshipDeletionTypeException;
 import com.liferay.object.field.business.type.ObjectFieldBusinessType;
 import com.liferay.object.field.business.type.ObjectFieldBusinessTypeRegistry;
 import com.liferay.object.field.setting.util.ObjectFieldSettingUtil;
+import com.liferay.object.field.util.ObjectFieldUtil;
 import com.liferay.object.internal.action.util.ObjectActionThreadLocal;
 import com.liferay.object.internal.entry.util.ObjectEntrySearchUtil;
 import com.liferay.object.internal.filter.parser.ObjectFilterParser;
@@ -2239,6 +2240,44 @@ public class ObjectEntryLocalServiceImpl
 		return joinStep.where(predicate);
 	}
 
+	private String _getAutoIncrementSortableValue(
+		String prefix, String suffix, String value) {
+
+		return StringUtil.removeLast(
+			StringUtil.removeFirst(value, prefix), suffix);
+	}
+
+	private String _getAutoIncrementValue(
+		String counterName, String initialValue, String prefix, String suffix,
+		String valueString) {
+
+		long currentId = counterLocalService.getCurrentId(counterName);
+
+		long value = GetterUtil.getLong(
+			_getAutoIncrementSortableValue(prefix, suffix, valueString));
+
+		if ((currentId == 0) || (value > currentId)) {
+			currentId = Math.max(value, GetterUtil.getLong(initialValue));
+
+			counterLocalService.reset(counterName, currentId);
+		}
+		else if (value == 0) {
+			currentId = counterLocalService.increment(counterName);
+		}
+		else {
+			currentId = value;
+		}
+
+		StringBuilder sb = new StringBuilder(String.valueOf(currentId));
+
+		while (sb.length() < initialValue.length()) {
+			sb.insert(0, CharPool.NUMBER_0);
+		}
+
+		return StringBundler.concat(
+			GetterUtil.getString(prefix), sb, GetterUtil.getString(suffix));
+	}
+
 	private Map<String, Object> _getColumns(ObjectDefinition objectDefinition) {
 		Map<String, Object> columns = new HashMap<>();
 
@@ -3053,22 +3092,8 @@ public class ObjectEntryLocalServiceImpl
 	 * @see com.liferay.portal.upgrade.util.Table#getValue
 	 */
 	private Object _getValue(Object object, int sqlType) throws SQLException {
-		if (_isNumeric(sqlType)) {
-			if (object == null) {
-				return null;
-			}
-			else if (sqlType == Types.BIGINT) {
-				return GetterUtil.getLong(object);
-			}
-			else if (sqlType == Types.DECIMAL) {
-				return object;
-			}
-			else if (sqlType == Types.DOUBLE) {
-				return GetterUtil.getDouble(object);
-			}
-			else if (sqlType == Types.INTEGER) {
-				return GetterUtil.getInteger(object);
-			}
+		if (sqlType == Types.BIGINT) {
+			return GetterUtil.getLong(object);
 		}
 		else if (sqlType == Types.BOOLEAN) {
 			return GetterUtil.getBoolean(object);
@@ -3084,6 +3109,15 @@ public class ObjectEntryLocalServiceImpl
 			Date date = (Date)object;
 
 			return new Timestamp(date.getTime());
+		}
+		else if (sqlType == Types.DECIMAL) {
+			return object;
+		}
+		else if (sqlType == Types.DOUBLE) {
+			return GetterUtil.getDouble(object);
+		}
+		else if (sqlType == Types.INTEGER) {
+			return GetterUtil.getInteger(object);
 		}
 		else if (sqlType == Types.VARCHAR) {
 			return object;
@@ -3303,16 +3337,28 @@ public class ObjectEntryLocalServiceImpl
 			dynamicObjectDefinitionTable.getObjectFields();
 
 		for (ObjectField objectField : objectFields) {
-			if (objectField.isLocalized()) {
+			if (!objectField.hasInsertValues() || objectField.isLocalized()) {
 				continue;
 			}
 
 			if (objectField.compareBusinessType(
-					ObjectFieldConstants.BUSINESS_TYPE_AGGREGATION) ||
-				objectField.compareBusinessType(
-					ObjectFieldConstants.BUSINESS_TYPE_FORMULA) ||
-				!values.containsKey(objectField.getName())) {
+					ObjectFieldConstants.BUSINESS_TYPE_AUTO_INCREMENT)) {
 
+				_validateAutoIncrementValue(
+					objectField,
+					GetterUtil.getString(values.get(objectField.getName())));
+
+				sb.append(", ");
+				sb.append(objectField.getDBColumnName());
+				sb.append(", ");
+				sb.append(objectField.getSortableDBColumnName());
+
+				count += 2;
+
+				continue;
+			}
+
+			if (!values.containsKey(objectField.getName())) {
 				if (objectField.isRequired() &&
 					(workflowAction != WorkflowConstants.ACTION_SAVE_DRAFT)) {
 
@@ -3370,13 +3416,47 @@ public class ObjectEntryLocalServiceImpl
 			_setColumn(preparedStatement, index++, Types.BIGINT, objectEntryId);
 
 			for (ObjectField objectField : objectFields) {
-				if (objectField.compareBusinessType(
-						ObjectFieldConstants.BUSINESS_TYPE_AGGREGATION) ||
-					objectField.compareBusinessType(
-						ObjectFieldConstants.BUSINESS_TYPE_FORMULA) ||
-					!values.containsKey(objectField.getName()) ||
+				if (!objectField.hasInsertValues() ||
 					objectField.isLocalized()) {
 
+					continue;
+				}
+
+				if (objectField.compareBusinessType(
+						ObjectFieldConstants.BUSINESS_TYPE_AUTO_INCREMENT)) {
+
+					Column<?, ?> column =
+						dynamicObjectDefinitionTable.getColumn(
+							objectField.getDBColumnName());
+
+					String prefix = ObjectFieldSettingUtil.getValue(
+						ObjectFieldSettingConstants.NAME_PREFIX, objectField);
+					String suffix = ObjectFieldSettingUtil.getValue(
+						ObjectFieldSettingConstants.NAME_SUFFIX, objectField);
+
+					String value = _getAutoIncrementValue(
+						ObjectFieldUtil.getCounterName(objectField),
+						ObjectFieldSettingUtil.getValue(
+							ObjectFieldSettingConstants.NAME_INITIAL_VALUE,
+							objectField),
+						prefix, suffix,
+						GetterUtil.getString(
+							values.get(objectField.getName())));
+
+					_setColumn(
+						preparedStatement, index++, column.getSQLType(), value);
+
+					column = dynamicObjectDefinitionTable.getColumn(
+						objectField.getSortableDBColumnName());
+
+					_setColumn(
+						preparedStatement, index++, column.getSQLType(),
+						_getAutoIncrementSortableValue(prefix, suffix, value));
+
+					continue;
+				}
+
+				if (!values.containsKey(objectField.getName())) {
 					continue;
 				}
 
@@ -3402,16 +3482,6 @@ public class ObjectEntryLocalServiceImpl
 		catch (Exception exception) {
 			throw new SystemException(exception);
 		}
-	}
-
-	private boolean _isNumeric(int sqlType) {
-		if ((sqlType == Types.BIGINT) || (sqlType == Types.DECIMAL) ||
-			(sqlType == Types.DOUBLE) || (sqlType == Types.INTEGER)) {
-
-			return true;
-		}
-
-		return false;
 	}
 
 	private List<Object[]> _list(
@@ -3537,7 +3607,10 @@ public class ObjectEntryLocalServiceImpl
 		else if (javaTypeClass == Double.class) {
 			Number number = (Number)object;
 
-			if ((number != null) && !(number instanceof Double)) {
+			if (number == null) {
+				number = Double.valueOf(0D);
+			}
+			else if (!(number instanceof Double)) {
 				number = number.doubleValue();
 			}
 
@@ -3546,7 +3619,10 @@ public class ObjectEntryLocalServiceImpl
 		else if (javaTypeClass == Integer.class) {
 			Number number = (Number)object;
 
-			if ((number != null) && !(number instanceof Integer)) {
+			if (number == null) {
+				number = Integer.valueOf(0);
+			}
+			else if (!(number instanceof Integer)) {
 				number = number.intValue();
 			}
 
@@ -3555,7 +3631,10 @@ public class ObjectEntryLocalServiceImpl
 		else if (javaTypeClass == Long.class) {
 			Number number = (Number)object;
 
-			if ((number != null) && !(number instanceof Long)) {
+			if (number == null) {
+				number = Long.valueOf(0L);
+			}
+			else if (!(number instanceof Long)) {
 				number = number.longValue();
 			}
 
@@ -3635,27 +3714,8 @@ public class ObjectEntryLocalServiceImpl
 			Object value)
 		throws Exception {
 
-		if (_isNumeric(sqlType)) {
-			if ((value == null) || StringPool.BLANK.equals(value)) {
-				preparedStatement.setNull(index, sqlType);
-			}
-			else if (sqlType == Types.BIGINT) {
-				preparedStatement.setLong(index, GetterUtil.getLong(value));
-			}
-			else if (sqlType == Types.DECIMAL) {
-				preparedStatement.setBigDecimal(
-					index,
-					new BigDecimal(_toPeriodSeparator(String.valueOf(value))));
-			}
-			else if (sqlType == Types.DOUBLE) {
-				preparedStatement.setDouble(
-					index,
-					GetterUtil.getDouble(
-						_toPeriodSeparator(String.valueOf(value))));
-			}
-			else {
-				preparedStatement.setInt(index, GetterUtil.getInteger(value));
-			}
+		if (sqlType == Types.BIGINT) {
+			preparedStatement.setLong(index, GetterUtil.getLong(value));
 		}
 		else if (sqlType == Types.BLOB) {
 			if (PostgreSQLJDBCUtil.isPGStatement(preparedStatement)) {
@@ -3703,6 +3763,24 @@ public class ObjectEntryLocalServiceImpl
 				preparedStatement.setTimestamp(
 					index, new Timestamp(date.getTime()));
 			}
+		}
+		else if (sqlType == Types.DECIMAL) {
+			if (Validator.isNull(String.valueOf(value))) {
+				value = BigDecimal.ZERO;
+			}
+
+			preparedStatement.setBigDecimal(
+				index,
+				new BigDecimal(_toPeriodSeparator(String.valueOf(value))));
+		}
+		else if (sqlType == Types.DOUBLE) {
+			preparedStatement.setDouble(
+				index,
+				GetterUtil.getDouble(
+					_toPeriodSeparator(String.valueOf(value))));
+		}
+		else if (sqlType == Types.INTEGER) {
+			preparedStatement.setInt(index, GetterUtil.getInteger(value));
 		}
 		else if (sqlType == Types.VARCHAR) {
 			preparedStatement.setString(index, String.valueOf(value));
@@ -3791,12 +3869,7 @@ public class ObjectEntryLocalServiceImpl
 			dynamicObjectDefinitionTable.getObjectFields();
 
 		for (ObjectField objectField : objectFields) {
-			if (objectField.compareBusinessType(
-					ObjectFieldConstants.BUSINESS_TYPE_AGGREGATION) ||
-				objectField.compareBusinessType(
-					ObjectFieldConstants.BUSINESS_TYPE_FORMULA) ||
-				objectField.isLocalized()) {
-
+			if (!objectField.hasUpdateValues() || objectField.isLocalized()) {
 				continue;
 			}
 
@@ -3875,12 +3948,9 @@ public class ObjectEntryLocalServiceImpl
 			int index = 1;
 
 			for (ObjectField objectField : objectFields) {
-				if (objectField.compareBusinessType(
-						ObjectFieldConstants.BUSINESS_TYPE_AGGREGATION) ||
-					objectField.compareBusinessType(
-						ObjectFieldConstants.BUSINESS_TYPE_FORMULA) ||
-					!values.containsKey(objectField.getName()) ||
-					objectField.isLocalized()) {
+				if (!objectField.hasUpdateValues() ||
+					objectField.isLocalized() ||
+					!values.containsKey(objectField.getName())) {
 
 					continue;
 				}
@@ -3908,6 +3978,58 @@ public class ObjectEntryLocalServiceImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _validateAutoIncrementValue(
+			ObjectField objectField, String value)
+		throws PortalException {
+
+		if (Validator.isNull(value)) {
+			return;
+		}
+
+		String prefix = ObjectFieldSettingUtil.getValue(
+			ObjectFieldSettingConstants.NAME_PREFIX, objectField);
+		String suffix = ObjectFieldSettingUtil.getValue(
+			ObjectFieldSettingConstants.NAME_SUFFIX, objectField);
+
+		if ((Validator.isNotNull(prefix) &&
+			 !StringUtil.startsWith(value, prefix)) ||
+			(Validator.isNotNull(suffix) &&
+			 !StringUtil.endsWith(value, suffix))) {
+
+			throw new ObjectEntryValuesException.InvalidValue(
+				objectField.getName());
+		}
+
+		String initialValue = ObjectFieldSettingUtil.getValue(
+			ObjectFieldSettingConstants.NAME_INITIAL_VALUE, objectField);
+		String sortableValue = _getAutoIncrementSortableValue(
+			prefix, suffix, value);
+
+		if ((initialValue.length() > sortableValue.length()) ||
+			((initialValue.length() < sortableValue.length()) &&
+			 StringUtil.startsWith(sortableValue, CharPool.NUMBER_0))) {
+
+			throw new ObjectEntryValuesException.InvalidValue(
+				objectField.getName());
+		}
+
+		long parsedValue = 0;
+
+		try {
+			parsedValue = Long.parseUnsignedLong(sortableValue);
+		}
+		catch (NumberFormatException numberFormatException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(numberFormatException);
+			}
+		}
+
+		if (parsedValue < GetterUtil.getLong(initialValue)) {
+			throw new ObjectEntryValuesException.InvalidValue(
+				objectField.getName());
 		}
 	}
 
@@ -4202,11 +4324,7 @@ public class ObjectEntryLocalServiceImpl
 		throws PortalException {
 
 		for (ObjectField objectField : objectFields) {
-			if (!GetterUtil.getBoolean(
-					ObjectFieldSettingUtil.getValue(
-						ObjectFieldSettingConstants.NAME_UNIQUE_VALUES,
-						objectField))) {
-
+			if (!objectField.hasUniqueValues()) {
 				continue;
 			}
 

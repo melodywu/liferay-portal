@@ -80,11 +80,15 @@ public class UserResourceImpl extends BaseUserResourceImpl {
 
 	@Activate
 	protected void activate() throws Exception {
-		AbstractResourceManager.setEndpointURLMap(
-			Collections.singletonMap(
-				SCIMConstants.USER_ENDPOINT, "/o/scim/Users"));
+		if (_registerLiferayUserSchemaExtension) {
+			synchronized (_userResourceManager) {
+				if (_registerLiferayUserSchemaExtension) {
+					_registerLiferayUserSchemaExtension();
 
-		_registerLiferayUserSchemaExtension();
+					_registerLiferayUserSchemaExtension = false;
+				}
+			}
+		}
 
 		_userManager = new UserManagerImpl(
 			_classNameLocalService, _companyLocalService, _configurationAdmin,
@@ -112,6 +116,10 @@ public class UserResourceImpl extends BaseUserResourceImpl {
 	}
 
 	private void _registerLiferayUserSchemaExtension() throws Exception {
+		AbstractResourceManager.setEndpointURLMap(
+			Collections.singletonMap(
+				SCIMConstants.USER_ENDPOINT, "/o/scim/Users"));
+
 		SCIMUserSchemaExtensionBuilder scimUserSchemaExtensionBuilder =
 			SCIMUserSchemaExtensionBuilder.getInstance();
 
@@ -206,6 +214,10 @@ public class UserResourceImpl extends BaseUserResourceImpl {
 		scimUserSchemaExtensionBuilder.buildUserSchemaExtension(file.getPath());
 	}
 
+	private static boolean _registerLiferayUserSchemaExtension = true;
+	private static final UserResourceManager _userResourceManager =
+		new UserResourceManager();
+
 	@Reference
 	private ClassNameLocalService _classNameLocalService;
 
@@ -234,7 +246,5 @@ public class UserResourceImpl extends BaseUserResourceImpl {
 	private UserLocalService _userLocalService;
 
 	private UserManager _userManager;
-	private final UserResourceManager _userResourceManager =
-		new UserResourceManager();
 
 }

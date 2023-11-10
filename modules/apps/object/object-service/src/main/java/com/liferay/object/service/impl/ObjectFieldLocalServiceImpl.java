@@ -10,7 +10,6 @@ import com.liferay.dynamic.data.mapping.expression.CreateExpressionRequest;
 import com.liferay.dynamic.data.mapping.expression.DDMExpressionFactory;
 import com.liferay.object.constants.ObjectDefinitionConstants;
 import com.liferay.object.constants.ObjectFieldConstants;
-import com.liferay.object.constants.ObjectFieldSettingConstants;
 import com.liferay.object.constants.ObjectRelationshipConstants;
 import com.liferay.object.definition.util.ObjectDefinitionUtil;
 import com.liferay.object.exception.DuplicateObjectFieldExternalReferenceCodeException;
@@ -31,7 +30,6 @@ import com.liferay.object.exception.ObjectFieldSystemException;
 import com.liferay.object.exception.RequiredObjectFieldException;
 import com.liferay.object.field.business.type.ObjectFieldBusinessType;
 import com.liferay.object.field.business.type.ObjectFieldBusinessTypeRegistry;
-import com.liferay.object.field.setting.util.ObjectFieldSettingUtil;
 import com.liferay.object.field.util.ObjectFieldUtil;
 import com.liferay.object.internal.dao.db.ObjectDBManagerUtil;
 import com.liferay.object.internal.field.setting.contributor.ObjectFieldSettingContributor;
@@ -69,6 +67,7 @@ import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.jdbc.CurrentConnection;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.SystemEventConstants;
@@ -310,6 +309,13 @@ public class ObjectFieldLocalServiceImpl
 			}
 
 			objectFieldPersistence.remove(objectField);
+
+			if (objectField.compareBusinessType(
+					ObjectFieldConstants.BUSINESS_TYPE_AUTO_INCREMENT)) {
+
+				counterLocalService.reset(
+					ObjectFieldUtil.getCounterName(objectField));
+			}
 
 			_objectFieldSettingLocalService.deleteObjectFieldObjectFieldSetting(
 				objectField);
@@ -652,6 +658,14 @@ public class ObjectFieldLocalServiceImpl
 			boolean system, List<ObjectFieldSetting> objectFieldSettings)
 		throws PortalException {
 
+		if (!FeatureFlagManagerUtil.isEnabled("LPS-196724") &&
+			Objects.equals(
+				businessType,
+				ObjectFieldConstants.BUSINESS_TYPE_AUTO_INCREMENT)) {
+
+			throw new UnsupportedOperationException();
+		}
+
 		ObjectDefinition objectDefinition =
 			_objectDefinitionPersistence.findByPrimaryKey(objectDefinitionId);
 
@@ -676,6 +690,7 @@ public class ObjectFieldLocalServiceImpl
 		_validateName(0, objectDefinition, name, system);
 		_validateReadOnlyAndReadOnlyConditionExpression(
 			businessType, readOnly, readOnlyConditionExpression);
+		_validateRequired(0, businessType, required);
 		_validateState(required, state);
 
 		ObjectField objectField = objectFieldPersistence.create(
@@ -755,11 +770,16 @@ public class ObjectFieldLocalServiceImpl
 				dbTableName, objectField.getDBColumnName(),
 				objectField.getDBType()));
 
-		if (GetterUtil.getBoolean(
-				ObjectFieldSettingUtil.getValue(
-					ObjectFieldSettingConstants.NAME_UNIQUE_VALUES,
-					objectField))) {
+		if (objectField.compareBusinessType(
+				ObjectFieldConstants.BUSINESS_TYPE_AUTO_INCREMENT)) {
 
+			runSQL(
+				DynamicObjectDefinitionTableUtil.getAlterTableAddColumnSQL(
+					dbTableName, objectField.getSortableDBColumnName(),
+					ObjectFieldConstants.DB_TYPE_LONG));
+		}
+
+		if (objectField.hasUniqueValues()) {
 			ObjectDBManagerUtil.createIndexMetadata(
 				_currentConnection.getConnection(
 					objectFieldPersistence.getDataSource()),
@@ -972,25 +992,40 @@ public class ObjectFieldLocalServiceImpl
 
 		_objectViewLocalService.unassociateObjectField(objectField);
 
-		if (objectDefinition.isApproved() &&
-			!objectField.compareBusinessType(
-				ObjectFieldConstants.BUSINESS_TYPE_AGGREGATION) &&
-			!objectField.compareBusinessType(
-				ObjectFieldConstants.BUSINESS_TYPE_FORMULA) &&
-			!Objects.equals(objectField.getDBTableName(), "ObjectEntry") &&
-			!objectField.isLocalized()) {
-
-			_alterTableDropColumn(
-				objectField.getDBTableName(), objectField.getDBColumnName());
+		if (!objectDefinition.isApproved()) {
+			return objectField;
 		}
 
-		if (objectDefinition.isApproved() &&
-			objectDefinition.isEnableLocalization() &&
+		if (objectDefinition.isEnableLocalization() &&
 			objectField.isLocalized()) {
 
 			_alterTableDropColumn(
 				objectDefinition.getLocalizationDBTableName(),
 				objectField.getDBColumnName());
+
+			return objectField;
+		}
+
+		if (!objectField.hasInsertValues() ||
+			Objects.equals(
+				objectField.getDBTableName(),
+				ObjectEntryTable.INSTANCE.getTableName())) {
+
+			return objectField;
+		}
+
+		_alterTableDropColumn(
+			objectField.getDBTableName(), objectField.getDBColumnName());
+
+		if (objectField.compareBusinessType(
+				ObjectFieldConstants.BUSINESS_TYPE_AUTO_INCREMENT)) {
+
+			_alterTableDropColumn(
+				objectField.getDBTableName(),
+				objectField.getSortableDBColumnName());
+
+			counterLocalService.reset(
+				ObjectFieldUtil.getCounterName(objectField));
 		}
 
 		return objectField;
@@ -1484,6 +1519,14 @@ public class ObjectFieldLocalServiceImpl
 			return;
 		}
 
+		if (Objects.equals(
+				businessType,
+				ObjectFieldConstants.BUSINESS_TYPE_AUTO_INCREMENT) &&
+			!Objects.equals(readOnly, ObjectFieldConstants.READ_ONLY_FALSE)) {
+
+			throw new ObjectFieldReadOnlyException();
+		}
+
 		if (!(Objects.equals(
 				readOnly, ObjectFieldConstants.READ_ONLY_CONDITIONAL) ||
 			  Objects.equals(readOnly, ObjectFieldConstants.READ_ONLY_FALSE) ||
@@ -1522,6 +1565,14 @@ public class ObjectFieldLocalServiceImpl
 			long objectFieldId, String businessType, boolean required)
 		throws PortalException {
 
+		if (Objects.equals(
+				businessType,
+				ObjectFieldConstants.BUSINESS_TYPE_AUTO_INCREMENT) &&
+			required) {
+
+			throw new ObjectFieldRequiredException();
+		}
+
 		if (!StringUtil.equals(
 				businessType,
 				ObjectFieldConstants.BUSINESS_TYPE_RELATIONSHIP)) {
@@ -1530,9 +1581,11 @@ public class ObjectFieldLocalServiceImpl
 		}
 
 		ObjectRelationship objectRelationship =
-			_objectRelationshipPersistence.findByObjectFieldId2(objectFieldId);
+			_objectRelationshipPersistence.fetchByObjectFieldId2(objectFieldId);
 
-		if (objectRelationship.isEdge() && !required) {
+		if ((objectRelationship != null) && objectRelationship.isEdge() &&
+			!required) {
+
 			throw new ObjectFieldRequiredException();
 		}
 	}

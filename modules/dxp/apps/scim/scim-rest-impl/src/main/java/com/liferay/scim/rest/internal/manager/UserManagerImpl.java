@@ -40,8 +40,8 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.scim.rest.internal.configuration.ScimClientOAuth2ApplicationConfiguration;
 import com.liferay.scim.rest.internal.model.ScimUser;
-import com.liferay.scim.rest.internal.util.ScimClientUtil;
 import com.liferay.scim.rest.internal.util.ScimUserUtil;
+import com.liferay.scim.rest.util.ScimClientUtil;
 
 import java.util.Calendar;
 import java.util.Map;
@@ -301,7 +301,8 @@ public class UserManagerImpl implements UserManager {
 
 		_saveScimClientId(
 			ScimClientUtil.generateScimClientId(
-				scimClientOAuth2ApplicationConfiguration.applicationName()),
+				scimClientOAuth2ApplicationConfiguration.
+					oAuth2ApplicationName()),
 			portalUser);
 
 		return portalUser;
@@ -351,7 +352,7 @@ public class UserManagerImpl implements UserManager {
 				_getScimClientOAuth2ApplicationConfiguration(companyId);
 
 		String scimClientId = ScimClientUtil.generateScimClientId(
-			scimClientOAuth2ApplicationConfiguration.applicationName());
+			scimClientOAuth2ApplicationConfiguration.oAuth2ApplicationName());
 
 		if (!Objects.equals(_getScimClientId(portalUser), scimClientId)) {
 			return null;
@@ -512,7 +513,7 @@ public class UserManagerImpl implements UserManager {
 		throws PortalException {
 
 		String scimClientId = ScimClientUtil.generateScimClientId(
-			scimClientOAuth2ApplicationConfiguration.applicationName());
+			scimClientOAuth2ApplicationConfiguration.oAuth2ApplicationName());
 		String portalUserScimClientId = _getScimClientId(portalUser);
 
 		if (Validator.isNotNull(portalUserScimClientId) &&

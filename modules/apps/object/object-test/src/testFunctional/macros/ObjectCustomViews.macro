@@ -101,8 +101,8 @@ definition {
 
 		if (isSet(filterValue)) {
 			Click(
-				key_filterLabel = "Value",
-				locator1 = "ObjectCustomViews#SELECT_FILTER_GENERIC");
+				key_labelName = "Value",
+				locator1 = "ObjectAdmin#CLAY_MULTI_SELECT_INPUT");
 
 			for (var filterValueList : list ${filterValue}) {
 				Click.clickAtNotVisible(
@@ -268,13 +268,10 @@ definition {
 
 		DropdownMenuItem.click(menuItem = "Edit");
 
-		Click(
-			key_sorting = ${actualSort},
-			locator1 = "ObjectCustomViews#EDIT_SORTING");
-
-		Click(
-			key_sortOption = ${newSortOption},
-			locator1 = "ObjectCustomViews#SORT_OPTION");
+		ObjectAdmin.selectDropdownItem(
+			currentOption = ${actualSort},
+			labelName = "Sorting",
+			optionName = ${newSortOption});
 
 		Click(
 			key_tab = "Save",

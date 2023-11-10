@@ -13,6 +13,7 @@ import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.model.AssetTag;
 import com.liferay.asset.kernel.service.AssetEntryLocalService;
 import com.liferay.asset.kernel.service.persistence.AssetEntryPersistence;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -498,15 +499,19 @@ public class AssetTagLocalServiceImpl extends AssetTagLocalServiceBaseImpl {
 	 */
 	@Override
 	public long[] getTagIds(String name) {
-		List<AssetTag> tags = assetTagPersistence.findByName(_getName(name));
+		return TransformUtil.transformToLongArray(
+			assetTagPersistence.findByName(_getName(name)),
+			assetTag -> {
+				if (FeatureFlagManagerUtil.isEnabled("LPS-194362")) {
+					if (StringUtil.equals(assetTag.getName(), name)) {
+						return assetTag.getTagId();
+					}
 
-		List<Long> tagIds = new ArrayList<>(tags.size());
+					return null;
+				}
 
-		for (AssetTag tag : tags) {
-			tagIds.add(tag.getTagId());
-		}
-
-		return ArrayUtil.toArray(tagIds.toArray(new Long[0]));
+				return assetTag.getTagId();
+			});
 	}
 
 	/**
