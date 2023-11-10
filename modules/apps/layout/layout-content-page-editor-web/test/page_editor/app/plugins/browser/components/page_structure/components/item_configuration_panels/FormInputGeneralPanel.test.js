@@ -158,7 +158,6 @@ const renderComponent = ({
 			},
 		},
 		permissions: {UPDATE: true},
-		restrictedItemIds: new Set(),
 		selectedViewportSize: VIEWPORT_SIZES.desktop,
 	};
 

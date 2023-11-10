@@ -96,7 +96,6 @@ const renderComponent = (dispatch = () => {}) => {
 							name: 'Collection 2',
 						},
 					],
-					restrictedItemIds: new Set(),
 					widgets: [
 						{
 							path: 'root--category-highlighted',

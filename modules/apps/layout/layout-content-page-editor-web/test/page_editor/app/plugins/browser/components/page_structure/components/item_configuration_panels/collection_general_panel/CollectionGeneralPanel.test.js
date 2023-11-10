@@ -103,7 +103,6 @@ const renderComponent = ({
 				languageId: 'en_US',
 				layoutData,
 				permissions: {UPDATE: true},
-				restrictedItemIds: new Set(),
 				segmentsExperienceId: '0',
 				selectedViewportSize,
 			})}

@@ -191,9 +191,7 @@ describe('ContentsSidebar', () => {
 		});
 
 		expect(
-			screen.getByText(
-				'this-content-cannot-be-displayed-due-to-permission-restrictions'
-			)
+			screen.getByText('there-is-no-content-on-this-page')
 		).toBeInTheDocument();
 	});
 
@@ -269,9 +267,7 @@ describe('ContentsSidebar', () => {
 		});
 
 		expect(
-			screen.getByText(
-				'this-content-cannot-be-displayed-due-to-permission-restrictions'
-			)
+			screen.getByText('there-is-no-content-on-this-page')
 		).toBeInTheDocument();
 	});
 
